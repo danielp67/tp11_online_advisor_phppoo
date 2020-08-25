@@ -6,7 +6,9 @@ use Exception;
 
 class User
 {
-
+    const PATTERN_MAIL = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
+    const PATTERN_USERLOGIN = "/^[a-zA-Z0-9_]{2,16}$/";
+    const PATTERN_PASS = "/^[a-zA-Z0-9_]{6,12}$/";
     private $userLogin;
     private $mail;
     private $pass;
@@ -20,7 +22,7 @@ class User
     //setters
     public function setMail($mail)
     {
-        $pattern = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
+        $pattern = self::PATTERN_MAIL;
         if (! preg_match ( $pattern , $mail ) ){
             throw new Exception('mail est invalide');
         }
@@ -31,7 +33,7 @@ class User
 
     public function setUserLogin($userLogin)
     {
-        $pattern = "/^[a-zA-Z0-9_]{2,16}$/";
+        $pattern = self::PATTERN_USERLOGIN;
         if (! preg_match ($pattern , $userLogin) ){
             throw new Exception('Le pseudo ou login est invalide');
         }
@@ -42,7 +44,7 @@ class User
 
     public function setPass($pass)
     {  
-        $pattern = "/^[a-zA-Z0-9_]{6,12}$/";
+        $pattern = self::PATTERN_PASS;
         if (! preg_match ($pattern , $pass) ){
             throw new Exception('pass est invalide');
         }
@@ -79,13 +81,13 @@ class User
     public function checkNewUser($user)
     {   
 
-        $userLogin = htmlspecialchars($user['login']);
-        $mail = htmlspecialchars($user['mail']);
-        $pass = htmlspecialchars($user['pass']);
-        $pass2 = htmlspecialchars($user['pass2']);
+        $user['login'] = htmlspecialchars($user['login']);
+        $user['mail'] = htmlspecialchars($user['mail']);
+        $user['pass'] = htmlspecialchars($user['pass']);
+        $user['pass2'] = htmlspecialchars($user['pass2']);
     
         
-        if( $this->setMail($mail) && $this->setPass($pass) && $pass === $pass2){
+        if( $this->setMail($user['mail']) && $this->setPass($user['pass']) && $user['pass'] === $user['pass2']){
 
             return $user;
             

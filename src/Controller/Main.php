@@ -27,23 +27,6 @@ class Main {
     }
 
 
-    public function logUser(){
-        $user = new User();
-        $checkUser = $user->checkUserLog($_POST['login'], $_POST['pass']);
-        if($checkUser){
-            $this->listItemPage();
-        }
-    }
-
-    public function addNewUser(){
-        $user = new User();
-        $checkUser = $user->createNewUser($_POST['login'], $_POST['mail'], $_POST['pass'], $_POST['pass2']);
-        if($checkUser){
-            $this->listItemPage();
-        }
-    }
-
-
     public function listItemPage()
     {   
         $Items = new Item();

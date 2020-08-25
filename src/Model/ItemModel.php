@@ -4,13 +4,13 @@ namespace App\Model ;
 
 
 
-class Item
+class ItemModel
 {
     private $db;
 
     public function __construct()
     {  
-        $pdo = new ConnectManager();
+        $pdo = new ConnectModel();
         $this->db = $pdo->dbConnect();
         
     }

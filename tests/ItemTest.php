@@ -5,10 +5,15 @@ use PHPUnit\Framework\TestCase;
 
 class ItemTest extends TestCase{
 
-    const PATTERN_MAIL = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
-    const PATTERN_ITEMNAME = "/^[a-zA-Z0-9_]{2,16}$/";
-    const PATTERN_PASS = "/^[a-zA-Z0-9_]{6,12}$/";
+    
+    const PATTERN_ITEMNAME = "/^(\w[ -.,!?]*){2,50}/";
     private $item;
+    private $itemName ='Tintin et Milou';
+    private $category ='Livre';
+    private $rate=3;
+    private $failitemName ='1';
+    private $failCategory = 42;
+    private $failRate=8;
 
     public function index(){
       $this->item = new Item();
@@ -27,13 +32,15 @@ class ItemTest extends TestCase{
     }
 
 
-    public function testsetItemName(){
+    public function testSetItemName(){
 
       $pattern = self::PATTERN_ITEMNAME;
 
       $this->index();
       $this->assertMatchesRegularExpression($pattern, $this->item->setItemName($this->itemName));
+
     }
+
 
     
   

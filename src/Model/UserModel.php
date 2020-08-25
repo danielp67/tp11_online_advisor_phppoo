@@ -4,7 +4,7 @@ namespace App\Model ;
 
 use Exception;
 
-class UserManager
+class UserModel
 {
 
     private $userLogin;
@@ -15,7 +15,7 @@ class UserManager
 
     public function __construct()
     {  
-        $pdo = new ConnectManager();
+        $pdo = new ConnectModel();
         $this->db = $pdo->dbConnect();
         
     }
@@ -38,18 +38,13 @@ class UserManager
     }
 
 
-    public function createNewUser($userLogin, $mail, $pass, $pass2)
+    public function createNewUser($user)
     {
-        $userLogin = htmlspecialchars($userLogin);
-        $mail = htmlspecialchars($mail);
-        $pass = htmlspecialchars($pass);
-        $pass2 = htmlspecialchars($pass2);
-        
        
-            if($this->checkUserExist($userLogin, $mail) == FALSE)
+            if($this->checkUserExist($user['login'], $user['mail']) == FALSE)
             {
             $newUser =  $this->db->prepare('INSERT INTO user (user_login, mail, pass, last_login_at) VALUES(?, ?, ?, NOW())');
-            $affectedLines = $newUser->execute(array($userLogin, $mail, $pass));
+            $affectedLines = $newUser->execute(array($user['login'], $user['mail'], $user['pass']));
             return $affectedLines;
             }
             else

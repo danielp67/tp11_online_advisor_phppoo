@@ -6,8 +6,7 @@ namespace App\Controller ;
 
 use App\Model\Item;
 use App\Model\User;
-use App\Model\UserManager;
-use App\TestManager;
+use App\Model\UserModel;
 
 use App\View;
 
@@ -19,7 +18,7 @@ class Users {
 
     public function __construct()
     {
-        $this->userManager = new UserManager();
+        $this->userManager = new UserModel();
     }
     
     public function loginPage()
@@ -55,9 +54,9 @@ class Users {
 
     public function addNewUser(){
         $this->user = new User($_POST['login']);
-        $this->user->checkNewUser($_POST);
+        $user = $this->user->checkNewUser($_POST);
 
-        $checkUser = $this->user->createNewUser($_POST['login'], $_POST['mail'], $_POST['pass'], $_POST['pass2']);
+        $checkUser = $this->userManager->createNewUser($user);
         if($checkUser){
             $this->listItemPage();
         }
@@ -74,16 +73,6 @@ class Users {
     }
 
 
-
-/*
-    public function addNewItem($itemName, $category, $rate, $review, $user)
-    {   
-        $Items = new Item();
-        $addNewItem = $Items->createItem($itemName, $category, $rate, $review, $user);
-       
-        require('src/View/listItemsView.php');
-    }
-*/
 }
 
 
