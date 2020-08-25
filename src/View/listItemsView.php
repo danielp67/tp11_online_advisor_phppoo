@@ -32,50 +32,27 @@
 <p class='news'>Derniers items notés :</p>
 
 <?php
-try
-{
-  // On se connecte à MySQL
-  $bdd = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', '');
-}
-catch(Exception $e)
-{
-  // En cas d'erreur, on affiche un message et on arrête tout
-        die('Erreur : '.$e->getMessage());
-}
 
 
-// Requête qui insère les derniers messages
-
-if(isset($_POST['titre']) AND isset($_POST['contenu']))
-{
-  $insert_message=$bdd->prepare('INSERT INTO billets(titre, contenu, date_creation) VALUES (:titre, :contenu, NOW())');
-
-  $insert_message->execute(array(
-    'titre' => $_POST['titre'],
-    'contenu'=> $_POST['contenu']
-  ));
-
-
-
-  $insert_message->closeCursor();
-}
-
-  while($affiche_message = $posts->fetch()){
+  while($affiche_message = $listItems->fetch()){
 
  ?>
 <div class="news">
     <h3>
-        <?php echo htmlspecialchars($affiche_message['titre']); ?>
+        <?php echo htmlspecialchars($affiche_message['item_name']); ?>
+        <?php echo htmlspecialchars($affiche_message['category']); ?>
         <em>le <?php echo $affiche_message['date_creation']; ?></em>
+        <?php echo htmlspecialchars($affiche_message['rate']); ?>
     </h3>
     
     <p>
     <?php
     // On affiche le contenu du billet
-    echo nl2br(htmlspecialchars($affiche_message['contenu']));
+    echo nl2br(htmlspecialchars($affiche_message['review']));
+    echo nl2br(htmlspecialchars($affiche_message['user']));
     ?>
     <br />
-    <em><a href="index.php?action=post&amp;id=<?php echo $affiche_message['id']; ?>">Commentaires</a></em>
+    <em><a href="items/getComments/<?php echo $affiche_message['id']; ?>">Commentaires</a></em>
     </p>
 </div>
 <?php
@@ -83,7 +60,7 @@ if(isset($_POST['titre']) AND isset($_POST['contenu']))
   }
 
 
-  $posts->closeCursor();
+  $listItems->closeCursor();
 
  ?>
   

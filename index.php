@@ -1,9 +1,9 @@
 <?php
-define('ROOT', str_replace('index.php','',$_SERVER['SCRIPT_FILENAME']));
 
-use App\Controller\Controller;
-use App\Model\User;
-use App\TestManager;
+use App\Controller\Items;
+use App\Controller\Main;
+
+define('ROOT', str_replace('index.php','',$_SERVER['SCRIPT_FILENAME']));
 
 
 require "./vendor/autoload.php";
@@ -11,14 +11,73 @@ require "./vendor/autoload.php";
 echo 'test ';
 
 $params = explode('/', $_GET['p']);
+var_dump($params);
+$controller = ucfirst($params[0]);
+echo $controller;
 
-$test = new TestManager();
-$test->bonjour();
+$route = array(
+ 
+    'Main' => new Main(), 
+    'Items' => new Items()
+    
+    );
 
-$controller = new Controller();
+try{
+
+    if($params[0] != ""){
+        // On sauvegarde le 1er paramètre dans $controller en mettant sa 1ère lettre en majuscule
+        $controller = ucfirst($params[0]);
+        
+        // On sauvegarde le 2ème paramètre dans $action si il existe, sinon index
+        $action = isset($params[1]) ? $params[1] : '';
+        echo $controller;
+        echo $action;
+        // On appelle le contrôleur
+        
+        // On instancie le contrôleur
+        $controller = $route[$controller];
+       
+        var_dump($controller) ;
+        if(method_exists($controller, $action)){
+            // On supprime les 2 premiers paramètres
+            echo 'vrai';
+            unset($params[0]);
+            unset($params[1]);
+    
+            // On appelle la méthode $action du contrôleur $controller
+            call_user_func_array([$controller,$action], $params);
+    
+        }else{
+            // On envoie le code réponse 404
+            http_response_code(404);
+            echo "La page recherchée n'existe pas";
+        }
+
+    }else{
+        // Ici aucun paramètre n'est défini
+        // On instancie le contrôleur
+    
+        $controller = new Main();
+    
+        // On appelle la méthode index
+        $controller->loginPage();
+    }
+
+}
+// Si au moins 1 paramètre existe
+catch(Exception $e) { // S'il y a eu une erreur, alors...
+    echo 'Erreur : ' . $e->getMessage();
+}
 
 
-$route =[];
+
+
+
+
+
+
+
+/*
 
 
 try{
@@ -39,21 +98,7 @@ try{
                 $controller->loginUser();
             }
 
-            /*
-            if (isset($_GET['id']) && $_GET['id'] >0 ){
-                if(isset($_POST['auteur']) AND isset($_POST['commentaire'])){
-                    addComment($_GET['id'], $_POST['auteur'], $_POST['commentaire']);
-                }
-                else{ // Autre exception
-                    throw new Exception('Tous les champs ne sont pas remplis !');
-                }
-            }
-
-*/
-            else { // Autre exception
-                throw new Exception('Erreur : aucun identifiant de billet envoyé');
                 
-            }
         }
        
     else {
@@ -72,5 +117,5 @@ try{
 catch(Exception $e) { // S'il y a eu une erreur, alors...
     echo 'Erreur : ' . $e->getMessage();
 }
-
+*/
 

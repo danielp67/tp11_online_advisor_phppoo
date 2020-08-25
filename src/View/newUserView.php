@@ -7,27 +7,27 @@
 <p><a href="index.php">Retour à la liste des items</a></p>
 
 
-<form method="post" action="index.php?action=addNewUser ?>" class="news">
+<form method="post" action="main/addNewUser" class="news">
 
                             <div id="signup" class="form-group">
                                 <legend class="text-secondary mt-3">Inscription</legend>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="username">Nom d'utilisateur : </label>
-                                            <input class="form-control" type="text" name="username" id="username" required minlength="4">
+                                            <label for="login">Nom d'utilisateur : </label>
+                                            <input class="form-control" type="text" name="login" id="login" required minlength="4">
                                         </div>
                                         <div class="form-group">
-                                            <label>E-mail : </label>
+                                            <label for="mail">E-mail : </label>
                                             <input class="form-control" type="email" name="mail" id="mail" placeholder="nom@exemple.com">
                                         </div>
                                         <div class="form-group">
-                                            <label for="newPassword">Mot de passe : </label>
-                                            <input class="form-control" type="password" name="newPassword" id="newPassword">
+                                            <label for="pass">Mot de passe : </label>
+                                            <input class="form-control" type="pass" name="pass" id="pass">
                                         </div>
                                         <div class="form-group">
-                                            <label for="confPassword">Confirmation : </label>
-                                            <input class="form-control" type="password" name="confPassword" id="confPassword">
+                                            <label for="pass2">Confirmation : </label>
+                                            <input class="form-control" type="pass2" name="pass2" id="pass2">
                                         </div>
                                     </div>
                                 </div>
@@ -45,7 +45,7 @@
                                 </div>
                                 <hr>
                                 <div class="form-group mt-2">
-                                    <a  href="index.php?p=loginPage" id="forConnexion">Déjà Inscrit ?</a>
+                                    <a  href="main/loginPage" id="forConnexion">Déjà Inscrit ?</a>
                                     
                                 </div>
                             </div>

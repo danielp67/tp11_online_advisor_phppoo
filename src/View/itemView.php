@@ -9,36 +9,57 @@
 
 <div class="news">
     <h3>
-        <?php echo htmlspecialchars($post['titre']); ?>
-        <em>le <?php echo $post['date_creation']; ?></em>
-        
+        <?php echo htmlspecialchars($getItem['item_name']); ?>
+        <?php echo htmlspecialchars($getItem['category']); ?>
+        <em>le <?php echo $getItem['date_creation']; ?></em>
+        <?php echo htmlspecialchars($getItem['rate']); ?>
     </h3>
     
     <p>
     <?php
-    echo nl2br(htmlspecialchars($post['contenu']));
+    // On affiche le contenu du billet
+    echo nl2br(htmlspecialchars($getItem['review']));
+    echo nl2br(htmlspecialchars($getItem['user']));
     ?>
+    <br />
+    
     </p>
 </div>
 
 <h2>Commentaires</h2>
 
 <?php
-while($affiche_message = $comments->fetch()){
+while($affiche_message = $getComments->fetch()){
 
   ?>
 <div class="news">
-<h3><?php echo $affiche_message['auteur']. '<em> le '. $affiche_message['date_commentaire'];?>
-<a href="index.php?action=modify&amp;id=<?php echo $affiche_message['id']; ?>" > (Modifier) </a></em></h3>
-<?php echo '<p>'.$affiche_message['commentaire'].'</p></div><br/>';
-}
+    <h3>
+        <?php echo htmlspecialchars($affiche_message['user']); ?>
+        <em>le <?php echo $affiche_message['date_comment']; ?></em>
+        
+    </h3>
+    
+    <p>
+    <?php
+    // On affiche le contenu du billet
+    echo nl2br(htmlspecialchars($affiche_message['comment']));
+    
+    ?>
+    <br>
+    <em><a href="items/getComments/<?=$affiche_message['id']; ?>">Modifier</a></em>
+    </p>
+</div>
+<?php
 
-?>
+  }
+
+ ?>
+
 
 
 <p class="news">Nouveau commentaire :</p>
 
-<form method="post" action="index.php?action=addComment&amp;id=<?=$post['id'] ?>" class="news">
+<form method="post" action="items/addComment/<?=$affiche_message['id'] = $getComments->fetch() ?>" class="news">
 
                 <label for="auteur">Auteur : </label>
                 <input type="text" name="auteur" id="auteur"  size="50" minlength="2" maxlength="50">
@@ -50,7 +71,11 @@ while($affiche_message = $comments->fetch()){
                  <input type="submit" value="Envoyer" />
 
 </form>
+<?php
 
+  $getComments->closeCursor();
+
+ ?>
 
 <?php $content = ob_get_clean(); ?>
 

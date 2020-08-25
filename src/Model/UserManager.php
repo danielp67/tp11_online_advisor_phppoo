@@ -4,7 +4,7 @@ namespace App\Model ;
 
 use Exception;
 
-class User
+class UserManager
 {
 
     private $userLogin;
@@ -20,55 +20,7 @@ class User
         
     }
 
-    public function mailCheck($mail)
-    {
-        
-        $pattern = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
-        if ( preg_match ( $pattern , $mail ) )
-        {
-        echo "L'adresse eMail est valide";
-        return $this->mail = $mail;
-        }
-        else 
-        {
-        throw new Exception('mail est invalide');
-        }
-    }
     
-    
-    public function userLoginCheck($userLogin)
-    {
-
-        $pattern = "/^[a-zA-Z0-9_]{2,16}$/";
-        if ( preg_match ($pattern , $userLogin) )
-        {
-        echo "Le pseudo ou login est valide";
-        return $this->userLogin = $userLogin;
-        }
-        else 
-        {
-        throw new Exception('userLogin est invalide');
-        }
-
-    }
-
-    public function passCheck($pass)
-    {
-
-        $pattern = "/^[a-zA-Z0-9_]{6,12}$/";
-        if ( preg_match ($pattern , $pass) )
-        {
-        echo "Le pseudo ou login est valide";
-        return $this->pass = $pass;
-        }
-        else 
-        {
-        throw new Exception('pass est invalide');
-        }
-
-    }
-
-
     public function checkUserExist($userLogin, $mail)
     {
         

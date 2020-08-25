@@ -23,7 +23,7 @@ class UserTest extends TestCase{
     }
 
     public function testUserLoginCheck(){
-      $pattern = "/^[a-zA-Z0-9_]{3,16}$/";
+      $pattern = "/^[a-zA-Z0-9_]{2,16}$/";
       $userLogin ='Username';
       $mail ='test@test.com';
       $pass='passmail';

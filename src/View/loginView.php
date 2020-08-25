@@ -7,17 +7,17 @@
 <p><a href="index.php">Retour à la liste des items</a></p>
 
 
-<form method="post" action="index.php?action=loginUser" class="news">
+<form method="post" action="main/logUser" class="news">
 
                             <div class="form-group">
                                 <legend class="text-secondary mt-3">Connexion</legend>
                                 <div class="form-group">
-                                    <label for="email">E-mail :</label>
-                                    <input type="email" class="form-control" id="email" size="30" minlength="2" value="nom@exemple.com">
+                                    <label for="login">Nom d'utilisateur :</label>
+                                    <input type="text" name="login" class="form-control" id="login" size="30" minlength="2" value="Username">
                                 </div>
                                 <div class="form-group">
-                                    <label for="password">Mot de passe :</label>
-                                    <input type="password" class="form-control" id="password" size="30" minlength="6" maxlength="14" placeholder="mot de passe">
+                                    <label for="pass">Mot de passe :</label>
+                                    <input type="password" name="pass" class="form-control" id="pass" size="30" minlength="6" maxlength="14" placeholder="mot de passe">
                                 </div>
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="resterconnecter">
@@ -29,7 +29,7 @@
                                 </div>
                                 <hr>
                                 <div class="form-group">
-                                    <a href="index.php?p=newUserPage" id="forSubscribe">Pas encore de compte ?</a>
+                                    <a href="main/newUserPage" id="forSubscribe">Pas encore de compte ?</a>
                                    
                                 </div>
                             </div>
