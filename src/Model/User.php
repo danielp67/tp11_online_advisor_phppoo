@@ -13,26 +13,26 @@ class User
     private $last_login_at;
     private $db;
 
-    public function __construct()
+    public function __construct($userLogin, $mail, $pass)
     {  
-        $pdo = new ConnectManager();
-        $this->db = $pdo->dbConnect();
+        //Ce code n'est pas de la responsibilite de User mais de USerModel
+        //$pdo = new ConnectManager();
+        //$this->db = $pdo->dbConnect();
+        
+        $this->setMail($mail);
         
     }
-
-    public function mailCheck($mail)
+    
+    //methode mailcheck d'avant
+    public function setMail($mail)
     {
         
         $pattern = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
-        if ( preg_match ( $pattern , $mail ) )
-        {
-        echo "L'adresse eMail est valide";
-        return $this->mail = $mail;
+        if (! preg_match ( $pattern , $mail ) ){
+            throw new Exception('mail est invalide');
         }
-        else 
-        {
-        throw new Exception('mail est invalide');
-        }
+        
+        $this->mail = $mail;
     }
     
     
@@ -85,17 +85,17 @@ class User
         
     }
 
-
-    public function createNewUser($userLogin, $mail, $pass, $pass2)
+    //Doit etre deplacé dans UserModel
+    public function createNewUser(User $user)
     {
-        $userLogin = htmlspecialchars($userLogin);
-        $mail = htmlspecialchars($mail);
+        //ton objet user est ici deja valide, pas besoin de reutiliser checkmail etc....
+        
+        $userLogin = htmlspecialchars($user->getLogin());
+        $mail = htmlspecialchars($user->getMail());
         $pass = htmlspecialchars($pass);
         $pass2 = htmlspecialchars($pass2);
         
-        if($this->mailCheck($mail) && $this->userLoginCheck($userLogin) && $this->passCheck($pass) && $pass === $pass2){
-            if($this->checkUserExist($userLogin, $mail) == FALSE)
-            {
+        if ($pass === $pass2) && ($this->checkUserExist($userLogin, $mail) == FALSE){
             $newUser =  $this->db->prepare('INSERT INTO user (user_login, mail, pass, last_login_at) VALUES(?, ?, ?, NOW())');
             $affectedLines = $newUser->execute(array($userLogin, $mail, $pass));
             return $affectedLines;
@@ -104,10 +104,6 @@ class User
             {
                 throw new Exception ('Login ou Mail déjà utilisé');
             }
-        }
-        else
-        {
-            throw new Exception ('Format incorrect');
         }
 
     }
