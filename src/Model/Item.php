@@ -2,43 +2,56 @@
 
 namespace App\Model ;
 
-require_once("model/Manager.php");
+use PDO;
 
 class Item
-{
-    protected function dbConnect()
+{   
+    private $itemName;
+    private $category;
+    private $rate;
+    private $review;
+    private $userName;
+    private $dateCreation;
+
+    public function __construct()
     {
-        $db = new \PDO('mysql:host=localhost;dbname=advisor_db;charset=utf8', 'root', '');
-        return $db;
+        
+    }
+    
+    public function setMail($mail)
+    {
+        $pattern = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
+        if (! preg_match ( $pattern , $mail ) ){
+            throw new Exception('mail est invalide');
+        }
+        $this->mail = $mail;
+
+        return $this->mail;
     }
 
-    public function createItem($itemName, $category, $rate, $review, $user)
+    public function setUserLogin($userLogin)
     {
-        $db = $this->dbConnect();
-        $newItem = $db->prepare('INSERT INTO items (item_name, category, rate, review, user, date_creation) VALUES(?, ?, ?, ?, ?, NOW())');
-        $affectedLines = $newItem->execute(array($itemName, $category, $rate, $review, $user));
+        $pattern = "/^[a-zA-Z0-9_]{2,16}$/";
+        if (! preg_match ($pattern , $userLogin) ){
+            throw new Exception('Le pseudo ou login est invalide');
+        }
+        $this->userLogin = $userLogin;
 
-        return $affectedLines;
+        return $this->userLogin;
+    }
+
+    public function setPass($pass)
+    {  
+        $pattern = "/^[a-zA-Z0-9_]{6,12}$/";
+        if (! preg_match ($pattern , $pass) ){
+            throw new Exception('pass est invalide');
+        }
+        $this->pass = $pass;
+
+        return $this->pass;
     }
 
 
-    public function getItems()
-    {
-        $db = $this->dbConnect();
-        $req = $db->query('SELECT id, item_name, category, rate, review, user, DATE_FORMAT(date_creation, \'%d/%m/%Y à %Hh%imin%ss\') AS date_creation FROM items ORDER BY date_creation DESC');
-        var_dump($req);
-        return $req;
-    }
-
-    public function getItem($itemId)
-    {
-        $db = $this->dbConnect();
-        $req = $db->prepare('SELECT id, item_name, category, rate, review, user, DATE_FORMAT(date_creation, \'%d/%m/%Y à %Hh%imin%ss\') AS date_creation FROM items  WHERE id = ?');
-        $req->execute(array($itemId));
-        $post = $req->fetch();
-        return $post;
-
-    }
 
 
 }

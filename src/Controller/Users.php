@@ -4,16 +4,67 @@
 
 namespace App\Controller ;
 
-use App\Model\Comment;
 use App\Model\Item;
-
+use App\Model\User;
+use App\Model\UserManager;
+use App\TestManager;
 
 use App\View;
 
 
-class Items {
+class Users {
 
+    private $user;
+    private $userManager;
+
+    public function __construct()
+    {
+        $this->userManager = new UserManager();
+    }
     
+    public function loginPage()
+    {
+        return require('src/View/loginView.php');
+    }
+
+    public function newUserPage()
+    {
+        return require('src/View/newUserView.php');
+    }
+
+
+    public function logUser(){
+        $this->user = new User($_POST['login']);
+        var_dump($this->user->getUserLogin());
+        var_dump($_POST);
+        $getUser = $this->userManager->getUser($this->user->getUserLogin());
+
+        var_dump($getUser);
+        var_dump($getUser['pass']);
+        
+        $checkUser = $this->user->checkLogUser($getUser['pass'], $_POST['pass']);
+
+        var_dump($checkUser);
+        
+        if($checkUser){
+            $this->listItemPage();
+        }
+        
+    }
+
+
+    public function addNewUser(){
+        $this->user = new User($_POST['login']);
+        $this->user->checkNewUser($_POST);
+
+        $checkUser = $this->user->createNewUser($_POST['login'], $_POST['mail'], $_POST['pass'], $_POST['pass2']);
+        if($checkUser){
+            $this->listItemPage();
+        }
+    }
+
+
+
     public function listItemPage()
     {   
         $items = new Item();
@@ -23,20 +74,16 @@ class Items {
     }
 
 
- public function getComments()
-    {
-        $item = new Item();
-        $params = explode('/', $_GET['p']);
-        $comments = new Comment();
-        $getComments = $comments->getComments($params[2]);
-        
-        $getItem = $item->getItem($params[2]);
-        require('src/View/itemView.php');
-         
+
+/*
+    public function addNewItem($itemName, $category, $rate, $review, $user)
+    {   
+        $Items = new Item();
+        $addNewItem = $Items->createItem($itemName, $category, $rate, $review, $user);
+       
+        require('src/View/listItemsView.php');
     }
-
-
-
+*/
 }
 
 

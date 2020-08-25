@@ -45,7 +45,7 @@ class UserManager
         $pass = htmlspecialchars($pass);
         $pass2 = htmlspecialchars($pass2);
         
-        if($this->mailCheck($mail) && $this->userLoginCheck($userLogin) && $this->passCheck($pass) && $pass === $pass2){
+       
             if($this->checkUserExist($userLogin, $mail) == FALSE)
             {
             $newUser =  $this->db->prepare('INSERT INTO user (user_login, mail, pass, last_login_at) VALUES(?, ?, ?, NOW())');
@@ -56,13 +56,10 @@ class UserManager
             {
                 throw new Exception ('Login ou Mail déjà utilisé');
             }
-        }
-        else
-        {
-            throw new Exception ('Format incorrect');
-        }
-
     }
+       
+
+    
 
 
     public function getUser($userLogin)
@@ -76,29 +73,7 @@ class UserManager
 
     }
 
-    public function checkUserLog($userLogin, $pass)
-    {   
-        $userLogin = $this->userLoginCheck($userLogin);
-        $req = $this->getUser($userLogin);
-        if($req){
-            $this->mail = $req['mail'];
-            $this->pass = $req['pass'];
-
-
-            if($this->pass == $pass && $this->userLogin === $userLogin){
-                return true;
-            }
-            else{
-                throw new Exception ('Erreur login ou mot de passe');
-            }
-        }
-        else{
-            throw new Exception ('Erreur login ou mot de passe');
-        }
-
-        
-        
-    }
+  
 
     public function updateUserDateLog($userLogin)
     {
@@ -108,10 +83,6 @@ class UserManager
 
         return $post;
     }
-
-
-
-
 
 
     public function deleteUser($userLogin)

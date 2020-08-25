@@ -7,7 +7,7 @@
 <p><a href="index.php">Retour à la liste des items</a></p>
 
 
-<form method="post" action="main/addNewUser" class="news">
+<form method="post" action="users/addNewUser" class="news">
 
                             <div id="signup" class="form-group">
                                 <legend class="text-secondary mt-3">Inscription</legend>
@@ -45,7 +45,7 @@
                                 </div>
                                 <hr>
                                 <div class="form-group mt-2">
-                                    <a  href="main/loginPage" id="forConnexion">Déjà Inscrit ?</a>
+                                    <a  href="users/loginPage" id="forConnexion">Déjà Inscrit ?</a>
                                     
                                 </div>
                             </div>

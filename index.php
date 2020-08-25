@@ -2,6 +2,7 @@
 
 use App\Controller\Items;
 use App\Controller\Main;
+use App\Controller\Users;
 
 define('ROOT', str_replace('index.php','',$_SERVER['SCRIPT_FILENAME']));
 
@@ -17,7 +18,8 @@ echo $controller;
 
 $route = array(
  
-    'Main' => new Main(), 
+    'Main' => new Main(),
+    'Users' => new Users(), 
     'Items' => new Items()
     
     );

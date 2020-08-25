@@ -7,7 +7,7 @@
 <p><a href="index.php">Retour à la liste des items</a></p>
 
 
-<form method="post" action="main/logUser" class="news">
+<form method="post" action="users/logUser" class="news">
 
                             <div class="form-group">
                                 <legend class="text-secondary mt-3">Connexion</legend>
@@ -29,7 +29,7 @@
                                 </div>
                                 <hr>
                                 <div class="form-group">
-                                    <a href="main/newUserPage" id="forSubscribe">Pas encore de compte ?</a>
+                                    <a href="users/newUserPage" id="forSubscribe">Pas encore de compte ?</a>
                                    
                                 </div>
                             </div>

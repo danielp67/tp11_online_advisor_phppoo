@@ -1,36 +1,23 @@
 <?php
 
+use App\Controller\Users;
 use App\Model\User;
 use PHPUnit\Framework\TestCase;
 
-class UserTest extends TestCase{
+class UsersTest extends TestCase{
 
-    const PATTERN_MAIL = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
-    const PATTERN_USERLOGIN = "/^[a-zA-Z0-9_]{2,16}$/";
-    const PATTERN_PASS = "/^[a-zA-Z0-9_]{6,12}$/";
-    private $userLogin ='Username';
-    private $mail ='test@test.com';
-    private $pass='passmail';
-    private $failUserLogin ='1';
-    private $failMail ='testtestcom';
-    private $failPass='passmailtooooolong';
-    private $user;
+    private $users;
 
     public function index(){
-      $this->user = new User($this->userLogin);
+      $this->users = new Users();
     }
 
-    public function testAssertInstanceOfUser(){
+    public function testAssertInstanceOfUsers(){
       $this->index();
-      $this->assertInstanceOf(User::class, $this->user);
-      $this->assertClassHasAttribute('userLogin', User::class);
-      $this->assertClassHasAttribute('mail', User::class);
-      $this->assertClassHasAttribute('pass', User::class);
-      $this->assertClassHasAttribute('last_login_at', User::class);
-
+      $this->assertInstanceOf(Users::class, $this->users);
     }
 
-    
+    /*
     public function testSetMail(){
         $pattern = self::PATTERN_MAIL;
 
@@ -82,7 +69,7 @@ class UserTest extends TestCase{
       $this->assertMatchesRegularExpression($pattern, $this->failPass);
     }
 
-    */
+    
 
 
     public function testGetUserLogin(){
@@ -90,12 +77,12 @@ class UserTest extends TestCase{
       $this->assertSame($this->userLogin, $this->user->getUserLogin());
     }
 
-/*
+
     public function testFailGetUserLogin(){
       $this->index();
       $this->assertSame($this->failUserLogin, $this->user->getUserLogin());
     }
-*/
+
 
     public function testCheckLogUser(){
       $passForm =$this->pass;
@@ -104,7 +91,7 @@ class UserTest extends TestCase{
       $this->assertTrue($this->user->checkLogUser($this->pass,$passForm));
 
     }
-/*
+
     public function testFailCheckLogUser(){
       $passForm =$this->failPass;
 
@@ -112,7 +99,7 @@ class UserTest extends TestCase{
       $this->assertFalse($this->user->checkLogUser($this->pass,$passForm));
       
     }
-  */
+  
 
     public function testCheckNewUser(){
       $user = array(
@@ -131,7 +118,7 @@ class UserTest extends TestCase{
 
     }
 
-/*
+
     public function testFailCheckNewUser(){
       $user = array(
         'login' => $this->userLogin,

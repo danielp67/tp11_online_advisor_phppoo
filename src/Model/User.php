@@ -11,161 +11,89 @@ class User
     private $mail;
     private $pass;
     private $last_login_at;
-    private $db;
 
-    public function __construct($userLogin, $mail, $pass)
+    public function __construct($userLogin)
     {  
-        //Ce code n'est pas de la responsibilite de User mais de USerModel
-        //$pdo = new ConnectManager();
-        //$this->db = $pdo->dbConnect();
-        
-        $this->setMail($mail);
-        
+        $this->setUserLogin($userLogin);
     }
     
-    //methode mailcheck d'avant
+    //setters
     public function setMail($mail)
     {
-        
         $pattern = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
         if (! preg_match ( $pattern , $mail ) ){
             throw new Exception('mail est invalide');
         }
-        
         $this->mail = $mail;
-    }
-    
-    
-    public function userLoginCheck($userLogin)
-    {
 
+        return $this->mail;
+    }
+
+    public function setUserLogin($userLogin)
+    {
         $pattern = "/^[a-zA-Z0-9_]{2,16}$/";
-        if ( preg_match ($pattern , $userLogin) )
-        {
-        echo "Le pseudo ou login est valide";
-        return $this->userLogin = $userLogin;
+        if (! preg_match ($pattern , $userLogin) ){
+            throw new Exception('Le pseudo ou login est invalide');
         }
-        else 
-        {
-        throw new Exception('userLogin est invalide');
-        }
+        $this->userLogin = $userLogin;
 
+        return $this->userLogin;
     }
 
-    public function passCheck($pass)
-    {
-
+    public function setPass($pass)
+    {  
         $pattern = "/^[a-zA-Z0-9_]{6,12}$/";
-        if ( preg_match ($pattern , $pass) )
-        {
-        echo "Le pseudo ou login est valide";
-        return $this->pass = $pass;
+        if (! preg_match ($pattern , $pass) ){
+            throw new Exception('pass est invalide');
         }
-        else 
-        {
-        throw new Exception('pass est invalide');
-        }
+        $this->pass = $pass;
 
+        return $this->pass;
     }
 
 
-    public function checkUserExist($userLogin, $mail)
+    //getters
+    public function getUserLogin()
     {
-        
-        $reqUser = $this->db->prepare('SELECT id, user_login, mail, pass FROM user  WHERE user_login = ? OR mail = ?');
-        $reqUser->execute(array($userLogin,$mail));
-        $req = $reqUser->fetch();
-     
-        if($req){
-            return $req;
-        }
-        else{
-            return false;
-        }
-        
-    }
-
-    //Doit etre deplacé dans UserModel
-    public function createNewUser(User $user)
-    {
-        //ton objet user est ici deja valide, pas besoin de reutiliser checkmail etc....
-        
-        $userLogin = htmlspecialchars($user->getLogin());
-        $mail = htmlspecialchars($user->getMail());
-        $pass = htmlspecialchars($pass);
-        $pass2 = htmlspecialchars($pass2);
-        
-        if ($pass === $pass2) && ($this->checkUserExist($userLogin, $mail) == FALSE){
-            $newUser =  $this->db->prepare('INSERT INTO user (user_login, mail, pass, last_login_at) VALUES(?, ?, ?, NOW())');
-            $affectedLines = $newUser->execute(array($userLogin, $mail, $pass));
-            return $affectedLines;
-            }
-            else
-            {
-                throw new Exception ('Login ou Mail déjà utilisé');
-            }
-        }
-
+        return $this->userLogin;
     }
 
 
-    public function getUser($userLogin)
-    {
-        
-        $req =  $this->db->prepare('SELECT id, user_login, mail, pass, last_login_at FROM user  WHERE user_login = ?');
-        $req->execute(array($userLogin));
-        $user = $req->fetch();
-
-        return $user;
-
-    }
-
-    public function checkUserLog($userLogin, $pass)
+    //méthode check log user
+    public function checkLogUser($passDb, $passForm)
     {   
-        $userLogin = $this->userLoginCheck($userLogin);
-        $req = $this->getUser($userLogin);
-        if($req){
-            $this->mail = $req['mail'];
-            $this->pass = $req['pass'];
+        $this->setPass($passDb);
 
-
-            if($this->pass == $pass && $this->userLogin === $userLogin){
+        if($this->pass == $passForm){
                 return true;
             }
             else{
                 throw new Exception ('Erreur login ou mot de passe');
             }
-        }
-        else{
-            throw new Exception ('Erreur login ou mot de passe');
-        }
-
-        
         
     }
 
-    public function updateUserDateLog($userLogin)
-    {
-        $req =  $this->db->prepare('UPDATE user SET last_login_at = NOW() WHERE user_login = ?');
-        $req->execute(array($userLogin));
-        $post = $req->fetch();
-
-        return $post;
-    }
 
 
+    //méthode check new user
+    public function checkNewUser($user)
+    {   
 
-
-
-
-    public function deleteUser($userLogin)
-    {
-        $req =  $this->db->prepare('DELETE FROM item  WHERE id = ?');
-        $req->execute(array($userLogin));
-        $post = $req->fetch();
-
-        return $post;
-    }
+        $userLogin = htmlspecialchars($user['login']);
+        $mail = htmlspecialchars($user['mail']);
+        $pass = htmlspecialchars($user['pass']);
+        $pass2 = htmlspecialchars($user['pass2']);
     
+        
+        if( $this->setMail($mail) && $this->setPass($pass) && $pass === $pass2){
+
+            return $user;
+            
+             }else
+        {
+            throw new Exception ('Format incorrect');
+        }
+
+    }
 
 }
