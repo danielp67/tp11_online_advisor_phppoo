@@ -4,37 +4,80 @@
 
 namespace App\Controller ;
 
-use App\Model\Comment;
 use App\Model\Item;
-
+use App\Model\User;
+use App\Model\UserModel;
 
 use App\View;
 
 
-class Items {
+class UserController {
+
+    private $user;
+    private $userModel;
+
+    public function __construct()
+    {
+        $this->userModel = new UserModel();
+    }
+    
+    public function loginPage()
+    {
+        return require('src/View/loginView.php');
+    }
+
+    public function newUserPage()
+    {
+        return require('src/View/newUserView.php');
+    }
+
+
+    public function logUser()
+    {
+        $this->user = new User($_POST['login']);
+        $userLogin = $this->user->getUserLogin();
+        
+        var_dump($_POST);
+        $getUserDb = $this->userModel->getUserDb($userLogin);
+
+        var_dump($getUserDb);
+
+        $checkUser = $this->user->checkLogUser($getUserDb, $_POST['pass']);
+        $getUserDb = $this->user->getUser();
+        var_dump($checkUser);
+        var_dump($getUserDb);
+        if($checkUser){
+            $this->userModel->updateUserDateLog($getUserDb);
+            $this->callItemController($getUserDb);
+        }
+        
+    }
+
+
+    public function addNewUser()
+    {
+        $this->user = new User($_POST['login']);
+        $newUser = $this->user->checkNewUser($_POST);
+
+        $checkUser = $this->userModel->createNewUser($newUser);
+        if($checkUser){
+            $this->callItemController($newUser);
+        }
+    }
+
+
+
+    public function callItemController($user)
+    {   
+       
+      //  header('Location: http://localhost/TP11_online_advisor_phppoo/items/listItemPage/'.$user['login']);
+        $itemList = new ItemController();
+        $itemList->mainItemPage($user);
+
+        
 
     
-    public function listItemPage()
-    {   
-        $items = new Item();
-        $listItems = $items->getItems();
-
-        require('src/View/listItemsView.php');
     }
-
-
- public function getComments()
-    {
-        $item = new Item();
-        $params = explode('/', $_GET['p']);
-        $comments = new Comment();
-        $getComments = $comments->getComments($params[2]);
-        
-        $getItem = $item->getItem($params[2]);
-        require('src/View/itemView.php');
-         
-    }
-
 
 
 }

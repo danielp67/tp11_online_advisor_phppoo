@@ -1,7 +1,6 @@
 <?php
 
 use App\Model\User;
-use PharIo\Manifest\InvalidEmailException;
 use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase{
@@ -21,13 +20,14 @@ class UserTest extends TestCase{
       $this->user = new User($this->userLogin);
     }
 
-    public function testAssertInstanceOfUser(){
+    public function testAssertInstanceOfUser()
+    {
       $this->index();
       $this->assertInstanceOf(User::class, $this->user);
       $this->assertClassHasAttribute('userLogin', User::class);
       $this->assertClassHasAttribute('mail', User::class);
       $this->assertClassHasAttribute('pass', User::class);
-      $this->assertClassHasAttribute('last_login_at', User::class);
+      $this->assertClassHasAttribute('lastLoginAt', User::class);
 
     }
 
@@ -57,15 +57,26 @@ class UserTest extends TestCase{
       $this->assertMatchesRegularExpression($pattern, $this->pass);
     }
 
+    public function testSetLastLoginAt()
+    {
+      $this->index();
+      $this->assertEqualsWithDelta($this->user->setLastLoginAt(), date('Y-m-d H:i:s'), 5);
+
+    }
+
+
+
     
-    public function testFailSetMail(){
+    public function testFailSetMail()
+    {
       $this->expectException(Exception::class);
       
       $this->index();
       $this->user->setMail($this->failMail);
     }
 
-    public function testFailSetUserLogin(){
+    public function testFailSetUserLogin()
+    {
       $this->expectException(Exception::class);
 
       $this->index();
@@ -73,7 +84,8 @@ class UserTest extends TestCase{
     }
 
 
-    public function testFailSetPass(){
+    public function testFailSetPass()
+    {
       $this->expectException(Exception::class);
 
       $this->index();
@@ -81,38 +93,75 @@ class UserTest extends TestCase{
     }
 
 
-    public function testGetUserLogin(){
+    public function testGetUserLogin()
+    {
       $this->index();
       $this->assertSame($this->userLogin, $this->user->getUserLogin());
     }
 
 
-    public function testFailGetUserLogin(){
+    public function testFailGetUserLogin()
+    {
   
       $this->index();
       $this->assertNotSame($this->failUserLogin, $this->user->getUserLogin());
     }
 
 
-    public function testCheckLogUser(){
-      $passForm =$this->pass;
-
+    
+    public function testGetUser()
+    {
       $this->index();
-      $this->assertTrue($this->user->checkLogUser($this->pass,$passForm));
+      $this->assertIsArray($this->user->getUser());
+      $this->assertArrayHasKey('login', $this->user->getUser());
+      $this->assertArrayHasKey('mail', $this->user->getUser());
+      $this->assertArrayHasKey('pass', $this->user->getUser());
+      $this->assertArrayHasKey('lastLoginAt', $this->user->getUser());
+     
+    }
+
+
+    public function testCheckLogUser()
+    { 
+      $this->index();
+      
+      $passForm =$this->pass;
+      $user = array(
+        'login' => $this->userLogin,
+        'mail' => $this->mail,
+        'pass' => $this->pass,
+        'lastLoginAt' => $this->user->setLastLoginAt(),
+      );
+
+      
+      
+      $this->assertTrue($this->user->checkLogUser($user,$passForm));
 
     }
 
-    public function testFailCheckLogUser(){
+    public function testFailCheckLogUser()
+    {
       $this->expectException(Exception::class);
-      $passForm =$this->failPass;
 
       $this->index();
-      $this->assertFalse($this->user->checkLogUser($this->pass,$passForm));
+
+      $passForm =$this->failPass;
+      $user = array(
+        'login' => $this->userLogin,
+        'mail' => $this->mail,
+        'pass' => $this->pass,
+        'lastLoginAt' => $this->user->setLastLoginAt(),
+      );
+
+      
+      $this->assertFalse($this->user->checkLogUser($user,$passForm));
       
     }
 
+    
 
-    public function testCheckNewUser(){
+    public function testCheckNewUser()
+    {
       $user = array(
         'login' => $this->userLogin,
         'mail' => $this->mail,
@@ -125,12 +174,13 @@ class UserTest extends TestCase{
       $this->assertArrayHasKey('login', $this->user->checkNewUser($user));
       $this->assertArrayHasKey('mail', $this->user->checkNewUser($user));
       $this->assertArrayHasKey('pass', $this->user->checkNewUser($user));
-      $this->assertArrayHasKey('pass2', $this->user->checkNewUser($user));
+      $this->assertArrayHasKey('lastLoginAt', $this->user->checkNewUser($user));
 
     }
 
 
-    public function testFailCheckNewUser(){
+    public function testFailCheckNewUser()
+    {
       $this->expectException(Exception::class);
       $user = array(
         'login' => $this->userLogin,

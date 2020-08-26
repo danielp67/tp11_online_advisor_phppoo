@@ -6,20 +6,15 @@ namespace App\Controller ;
 
 use App\Model\Item;
 use App\Model\User;
-use App\Model\UserModel;
+use App\Model\UserManager;
+use App\TestManager;
 
 use App\View;
 
 
-class Users {
+class MainController {
 
-    private $user;
-    private $userManager;
 
-    public function __construct()
-    {
-        $this->userManager = new UserModel();
-    }
     
     public function loginPage()
     {
@@ -32,46 +27,28 @@ class Users {
     }
 
 
-    public function logUser(){
-        $this->user = new User($_POST['login']);
-        var_dump($this->user->getUserLogin());
-        var_dump($_POST);
-        $getUser = $this->userManager->getUser($this->user->getUserLogin());
-
-        var_dump($getUser);
-        var_dump($getUser['pass']);
-        
-        $checkUser = $this->user->checkLogUser($getUser['pass'], $_POST['pass']);
-
-        var_dump($checkUser);
-        
-        if($checkUser){
-            $this->listItemPage();
-        }
-        
-    }
-
-
-    public function addNewUser(){
-        $this->user = new User($_POST['login']);
-        $user = $this->user->checkNewUser($_POST);
-
-        $checkUser = $this->userManager->createNewUser($user);
-        if($checkUser){
-            $this->listItemPage();
-        }
-    }
-
-
-
     public function listItemPage()
     {   
-        $items = new Item();
-        $listItems = $items->getItems();
+        $Items = new Item();
+        $listItems = $Items->getItems();
 
         require('src/View/listItemsView.php');
     }
 
+
+
+
+    public function addNewItem($itemName, $category, $rate, $review, $user)
+    {   
+        $Items = new Item();
+        $addNewItem = $Items->createItem($itemName, $category, $rate, $review, $user);
+        
+        
+        // $userManager = new UserManager();
+       // require('C:\wamp64\www\TP11_online_advisor_phppoo\view\listItemsView.php');
+
+        require('src/View/listItemsView.php');
+    }
 
 }
 

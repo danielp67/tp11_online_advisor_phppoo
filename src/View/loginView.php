@@ -29,7 +29,7 @@
                                 </div>
                                 <hr>
                                 <div class="form-group">
-                                    <a href="users/newUserPage" id="forSubscribe">Pas encore de compte ?</a>
+                                    <a href="main/newUserPage" id="forSubscribe">Pas encore de compte ?</a>
                                    
                                 </div>
                             </div>

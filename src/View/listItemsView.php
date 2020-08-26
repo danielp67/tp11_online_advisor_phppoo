@@ -3,19 +3,30 @@
 <?php ob_start(); ?>
   
 
-<p>Bienvenue sur Online Advisor !</p>
-<p><a href="index.php">Retour à la liste des items</a></p>
+<p>Bienvenue <?= $userLogin ?> sur Online Advisor !</p>
+
+<p>Dernière connexion le  <?= $lastLoginAt ?></p>
+
+<p><a href="items/listItemPage">Voir la liste des items</a></p>
+
+
+<?php if($displayItems)
+{
+  ?>
+
+
+
 
 
 <p class="news">Nouveau item :</p>
 
-      <form method="post" action="" class="news">
+      <form method="post" action="items/addNewItem" class="news">
 
-                      <label for="item">Item : </label>
-                      <input type="text" name="item" id="item"  size="30" minlength="2" maxlength="50" required >
+                      <label for="itemName">Item : </label>
+                      <input type="text" name="itemName" id="itemName"  size="30" minlength="2" maxlength="50" required >
                       </br>
                       <label for="category">Categorie : </label>
-                      <input type="text" name="item" id="item"  size="30" minlength="2" maxlength="50" required >
+                      <input type="text" name="category" id="category"  size="30" minlength="2" maxlength="50" required >
                       </br>
                       <label for="rate">Note : </label>
                       <input type="number" name="rate" id="rate" min="1" max="5" required >
@@ -32,6 +43,8 @@
 <p class='news'>Derniers items notés :</p>
 
 <?php
+
+
 
 
   while($affiche_message = $listItems->fetch()){
@@ -61,7 +74,7 @@
 
 
   $listItems->closeCursor();
-
+}
  ?>
   
 

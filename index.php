@@ -1,16 +1,17 @@
 <?php
 
-use App\Controller\Items;
-use App\Controller\Main;
-use App\Controller\Users;
+use App\Controller\ItemController;
+use App\Controller\MainController;
+use App\Controller\UserController;
 
 define('ROOT', str_replace('index.php','',$_SERVER['SCRIPT_FILENAME']));
+
 
 
 require "./vendor/autoload.php";
 
 echo 'test ';
-
+echo date('Y-m-d H:i:s');
 $params = explode('/', $_GET['p']);
 var_dump($params);
 $controller = ucfirst($params[0]);
@@ -18,9 +19,9 @@ echo $controller;
 
 $route = array(
  
-    'Main' => new Main(),
-    'Users' => new Users(), 
-    'Items' => new Items()
+    'Main' => new MainController(),
+    'Users' => new UserController(), 
+    'Items' => new ItemController()
     
     );
 
@@ -59,7 +60,7 @@ try{
         // Ici aucun paramètre n'est défini
         // On instancie le contrôleur
     
-        $controller = new Main();
+        $controller = new MainController();
     
         // On appelle la méthode index
         $controller->loginPage();

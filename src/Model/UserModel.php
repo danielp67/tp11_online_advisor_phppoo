@@ -7,10 +7,6 @@ use Exception;
 class UserModel
 {
 
-    private $userLogin;
-    private $mail;
-    private $pass;
-    private $last_login_at;
     private $db;
 
     public function __construct()
@@ -21,15 +17,15 @@ class UserModel
     }
 
     
-    public function checkUserExist($userLogin, $mail)
+    public function checkUserExist(string $userLogin, string $mail)
     {
         
-        $reqUser = $this->db->prepare('SELECT id, user_login, mail, pass FROM user  WHERE user_login = ? OR mail = ?');
-        $reqUser->execute(array($userLogin,$mail));
-        $req = $reqUser->fetch();
+        $req = $this->db->prepare('SELECT id, user_login, mail, pass FROM user  WHERE user_login = ? OR mail = ?');
+        $req->execute(array($userLogin,$mail));
+        $post = $req->fetch();
      
-        if($req){
-            return $req;
+        if($post){
+            return $post;
         }
         else{
             return false;
@@ -38,26 +34,28 @@ class UserModel
     }
 
 
-    public function createNewUser($user)
+    public function createNewUser(array $user) :bool
     {
        
-            if($this->checkUserExist($user['login'], $user['mail']) == FALSE)
-            {
-            $newUser =  $this->db->prepare('INSERT INTO user (user_login, mail, pass, last_login_at) VALUES(?, ?, ?, NOW())');
-            $affectedLines = $newUser->execute(array($user['login'], $user['mail'], $user['pass']));
+        if($this->checkUserExist($user['login'], $user['mail']) == FALSE)
+        {
+            $newUser =  $this->db->prepare('INSERT INTO user (user_login, mail, pass, last_login_at) VALUES(?, ?, ?, ?)');
+            $affectedLines = $newUser->execute(array($user['login'], $user['mail'], $user['pass'], $user['lastLoginAt']));
+            var_dump($affectedLines);
             return $affectedLines;
-            }
-            else
-            {
-                throw new Exception ('Login ou Mail déjà utilisé');
-            }
+
+        }
+        else
+        {
+            throw new Exception ('Login ou Mail déjà utilisé');
+        }
     }
        
 
     
 
 
-    public function getUser($userLogin)
+    public function getUserDb(string $userLogin) :array
     {
         
         $req =  $this->db->prepare('SELECT id, user_login, mail, pass, last_login_at FROM user  WHERE user_login = ?');
@@ -70,10 +68,10 @@ class UserModel
 
   
 
-    public function updateUserDateLog($userLogin)
+    public function updateUserDateLog($user)
     {
-        $req =  $this->db->prepare('UPDATE user SET last_login_at = NOW() WHERE user_login = ?');
-        $req->execute(array($userLogin));
+        $req =  $this->db->prepare('UPDATE user SET last_login_at = ? WHERE user_login = ?');
+        $req->execute(array($user['lastLoginAt'], $user['login']));
         $post = $req->fetch();
 
         return $post;

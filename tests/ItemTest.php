@@ -5,34 +5,40 @@ use PHPUnit\Framework\TestCase;
 
 class ItemTest extends TestCase{
 
-    
-    const PATTERN_ITEMNAME = "/^(\w[ -.,!?]*){2,50}/";
-    private $item;
-    private $itemName ='Tintin et Milou';
-    private $category ='Livre';
-    private $rate=3;
-    private $failitemName ='1';
-    private $failCategory = 42;
-    private $failRate=8;
+    const PATTERN_ITEMNAME = "/^(\w[ -.,!?]*){2,50}$/";
+    const PATTERN_CATEGORY = "/^(\w[ -]*){2,20}$/";
+    const PATTERN_REVIEW = "/^(\w[ -.,!?]*){2,255}$/";
+    const PATTERN_USERLOGIN = "/^[a-zA-Z0-9_]{2,16}$/";
+    private object $item;
+    private string $itemName ='Tintin et Milou';
+    private string $category ='Livre';
+    private int $rate=3;
+    private string $review ="Voila un tres bon livre et oui mon commentaire et long mais c'est pour le test";
+    private string $userLogin ='Username';
+    private string $failitemName ='1';
+    //private int $failCategory = 42;
+    //private string $failRate='3';
 
     public function index(){
-      $this->item = new Item();
+      $this->item = new Item($this->itemName);
     }
 
-    public function testAssertInstanceOfUser(){
+    public function testAssertInstanceOfUser()
+    {
       $this->index();
       $this->assertInstanceOf(Item::class, $this->item);
       $this->assertClassHasAttribute('itemName', Item::class);
       $this->assertClassHasAttribute('category', Item::class);
       $this->assertClassHasAttribute('rate', Item::class);
       $this->assertClassHasAttribute('review', Item::class);
-      $this->assertClassHasAttribute('userName', Item::class);
+      $this->assertClassHasAttribute('userLogin', Item::class);
       $this->assertClassHasAttribute('dateCreation', Item::class);
 
     }
 
 
-    public function testSetItemName(){
+    public function testSetItemName()
+    {
 
       $pattern = self::PATTERN_ITEMNAME;
 
@@ -41,6 +47,92 @@ class ItemTest extends TestCase{
 
     }
 
+    public function testSetCategory()
+    {
+
+      $pattern = self::PATTERN_CATEGORY;
+
+      $this->index();
+      $this->assertMatchesRegularExpression($pattern, $this->item->setCategory($this->category));
+
+    }
+
+    public function testSetRate()
+    {
+
+      $this->index();
+      $this->assertIsInt($this->item->setRate($this->rate));
+      //$this->assertIsNotInt($this->item->setRate('test'));
+    }
+
+
+    public function testSetReview()
+    {
+
+      $pattern = self::PATTERN_REVIEW;
+
+      $this->index();
+      $this->assertMatchesRegularExpression($pattern, $this->item->setReview($this->review));
+
+    }
+
+
+    public function testSetUserLogin()
+    {
+      $pattern = self::PATTERN_USERLOGIN;
+
+      $this->index();
+      $this->assertMatchesRegularExpression($pattern,  $this->item->setUserLogin($this->userLogin));
+    }
+
+
+    
+    public function testSetDateCreation()
+    {
+      $this->index();
+      $this->assertEqualsWithDelta($this->item->setDateCreation(), date('Y-m-d H:i:s'), 5);
+
+    }
+
+    
+    
+    public function testGetUser()
+    {
+      $this->index();
+      $this->assertIsArray($this->item->getItem());
+      $this->assertArrayHasKey('itemName', $this->item->getItem());
+      $this->assertArrayHasKey('category', $this->item->getItem());
+      $this->assertArrayHasKey('rate', $this->item->getItem());
+      $this->assertArrayHasKey('review', $this->item->getItem());
+      $this->assertArrayHasKey('userLogin', $this->item->getItem());
+      $this->assertArrayHasKey('dateCreation', $this->item->getItem());
+     
+    }
+
+    public function testCheckNewItem()
+    {
+      
+      $this->index();
+
+      $item = array(
+        'itemName' => $this->itemName,
+        'category' => $this->category,
+        'rate' => $this->rate,
+        'review' => $this->review,
+        'userLogin' => $this->userLogin,
+      );
+
+      $userLogin = $this->userLogin;
+
+      $this->assertIsArray($this->item->checkNewItem($item, $userLogin));
+      $this->assertArrayHasKey('itemName', $this->item->checkNewItem($item, $userLogin));
+      $this->assertArrayHasKey('category', $this->item->checkNewItem($item, $userLogin));
+      $this->assertArrayHasKey('rate', $this->item->checkNewItem($item, $userLogin));
+      $this->assertArrayHasKey('review', $this->item->checkNewItem($item, $userLogin));
+      $this->assertArrayHasKey('userLogin', $this->item->checkNewItem($item, $userLogin));
+      $this->assertArrayHasKey('dateCreation', $this->item->checkNewItem($item, $userLogin));
+
+    }
 
     
   

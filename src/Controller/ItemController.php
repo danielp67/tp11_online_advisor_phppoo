@@ -4,51 +4,69 @@
 
 namespace App\Controller ;
 
+use App\Model\CommentModel;
 use App\Model\Item;
-use App\Model\User;
-use App\Model\UserManager;
-use App\TestManager;
-
+use App\Model\ItemModel;
 use App\View;
 
 
-class Main {
+class ItemController {
 
+    private $item;
+    private $itemModel;
+    private $userLogin;
+    private $lastLoginAt;
 
+    public function __construct()
+    {
+      // $this->user = $user;
+       // $this->listItemPage();
+      
+       
+    }
+
+    public function mainItemPage($user)
+    {   
+        
+        $displayItems = false;
+        require('src/View/listItemsView.php');
+    }
     
-    public function loginPage()
-    {
-        return require('src/View/loginView.php');
-    }
-
-    public function newUserPage()
-    {
-        return require('src/View/newUserView.php');
-    }
-
-
     public function listItemPage()
     {   
-        $Items = new Item();
-        $listItems = $Items->getItems();
+        $items = new ItemModel();
+        $listItems = $items->getItems();
+        $displayItems = true;
+        $userLogin = $this->userLogin;
+        $lastLoginAt = $this->lastLoginAt;
 
         require('src/View/listItemsView.php');
+
     }
 
 
-
-
-    public function addNewItem($itemName, $category, $rate, $review, $user)
-    {   
-        $Items = new Item();
-        $addNewItem = $Items->createItem($itemName, $category, $rate, $review, $user);
+    public function getComments()
+    {
+        $item = new ItemModel();
+        $params = explode('/', $_GET['p']);
+        $comments = new CommentModel();
+        $getComments = $comments->getComments($params[2]);
         
-        
-        // $userManager = new UserManager();
-       // require('C:\wamp64\www\TP11_online_advisor_phppoo\view\listItemsView.php');
-
-        require('src/View/listItemsView.php');
+        $getItem = $item->getItem($params[2]);
+        require('src/View/itemView.php');
+         
     }
+
+
+    public function addNewItem()
+    {
+        $this->item = new Item($_POST['itemName']);
+        $newItem = $this->item->checkNewItem($_POST, $_GET['test']);
+
+
+    }
+
+
 
 }
 
