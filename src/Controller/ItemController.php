@@ -14,55 +14,43 @@ class ItemController {
 
     private $item;
     private $itemModel;
-    private $userLogin;
-    private $lastLoginAt;
+
 
     public function __construct()
     {
-      // $this->user = $user;
-       // $this->listItemPage();
-      
-       
-    }
-
-    public function mainItemPage($user)
-    {   
-        
-        $displayItems = false;
-        require('src/View/listItemsView.php');
+        $this->itemModel = new ItemModel();
     }
     
     public function listItemPage()
     {   
-        $items = new ItemModel();
-        $listItems = $items->getItems();
-        $displayItems = true;
-        $userLogin = $this->userLogin;
-        $lastLoginAt = $this->lastLoginAt;
+        $listItems = $this->itemModel->getItemsDb();
 
         require('src/View/listItemsView.php');
-
     }
 
 
     public function getComments()
     {
-        $item = new ItemModel();
         $params = explode('/', $_GET['p']);
         $comments = new CommentModel();
         $getComments = $comments->getComments($params[2]);
-        
-        $getItem = $item->getItem($params[2]);
+        $_SESSION['item_id'] = (int) $params[2];
+        $getItem = $this->itemModel->getItemDb($params[2]);
         require('src/View/itemView.php');
          
     }
 
 
     public function addNewItem()
-    {
-        $this->item = new Item($_POST['itemName']);
-        $newItem = $this->item->checkNewItem($_POST, $_GET['test']);
+    {      
 
+        $this->item = new Item($_POST['itemName']);
+        var_dump($_POST, $_SESSION['login']);
+       $checkItem = $this->item->checkNewItem($_POST, $_SESSION['login']);
+        $newItem = $this->itemModel->createNewItem($checkItem);
+        var_dump($newItem);
+
+        header('Location: http://localhost/TP11_online_advisor_phppoo/items/listItemPage');
 
     }
 

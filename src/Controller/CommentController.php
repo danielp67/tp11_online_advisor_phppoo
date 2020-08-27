@@ -4,33 +4,39 @@
 
 namespace App\Controller ;
 
-use App\Model\UserManager;
-use App\TestManager;
-
+use App\Model\Comment;
+use App\Model\CommentModel;
 use App\View;
 
 
-class Controller {
+class CommentController {
 
-    private static $foot;
-    private  $fot;
+    private $comment;
+    private $commentModel;
 
- public static function loginUserPage()
+
+    public function __construct()
     {
-      return require('src/View/loginView.php');
-    }
-
-    public static function newUserPage()
-    {
-        return require('src/View/newUserView.php');
+        $this->commentModel = new CommentModel();
     }
 
 
-    public static function loginUser()
-    {   
-       // $userManager = new UserManager();
-       // require('C:\wamp64\www\TP11_online_advisor_phppoo\view\listItemsView.php');
+    public function addComment()
+    {      
+
+        $this->comment = new Comment();
+        var_dump($this->comment);
+        var_dump($_POST, $_SESSION);
+        $checkComment = $this->comment->checkNewComment($_POST, $_SESSION);
+        var_dump($checkComment);
+       // $newComment = $this->commentModel->createNewComment($checkComment);
+      //  var_dump($newComment);
+
+    //    header('Location: http://localhost/TP11_online_advisor_phppoo/items/getComments/1');
+
     }
+
+
 
 }
 

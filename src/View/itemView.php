@@ -1,10 +1,14 @@
-<?php $title='Poster un nouveau commentaire' ?>
+<?php 
+$title='Poster un nouveau commentaire' ?>
 
 <?php ob_start(); ?>
 
 
-<p>Bienvenue sur Online Advisor !</p>
-<p><a href="index.php">Retour à la liste des items</a></p>
+
+<p>Bienvenue <?= $_SESSION['login'] ?> sur Online Advisor !</p>
+
+<p>Dernière connexion le  <?= $_SESSION['lastLoginAt'] ?></p>
+<p><a href="items/listItemPage">Retour à la liste des items</a></p>
 
 
 <div class="news">
@@ -59,11 +63,9 @@ while($affiche_message = $getComments->fetch()){
 
 <p class="news">Nouveau commentaire :</p>
 
-<form method="post" action="items/addComment/<?=$affiche_message['id'] = $getComments->fetch() ?>" class="news">
+<form method="post" action="comments/addComment/<?=$getItem['id'] ?>" class="news">
 
-                <label for="auteur">Auteur : </label>
-                <input type="text" name="auteur" id="auteur"  size="50" minlength="2" maxlength="50">
-                </br>
+                
                 <label for="comment">Commentaire : </label>
                 <input type="text" name="comment" id="comment" placeholder="Votre commentaire" size="50" maxlength="255" required >
                 </br>

@@ -1,5 +1,7 @@
 <?php
+session_start();
 
+use App\Controller\CommentController;
 use App\Controller\ItemController;
 use App\Controller\MainController;
 use App\Controller\UserController;
@@ -10,18 +12,17 @@ define('ROOT', str_replace('index.php','',$_SERVER['SCRIPT_FILENAME']));
 
 require "./vendor/autoload.php";
 
-echo 'test ';
 echo date('Y-m-d H:i:s');
 $params = explode('/', $_GET['p']);
 var_dump($params);
-$controller = ucfirst($params[0]);
-echo $controller;
+
 
 $route = array(
  
     'Main' => new MainController(),
     'Users' => new UserController(), 
-    'Items' => new ItemController()
+    'Items' => new ItemController(),
+    'Comments' => new CommentController()
     
     );
 
@@ -33,8 +34,7 @@ try{
         
         // On sauvegarde le 2ème paramètre dans $action si il existe, sinon index
         $action = isset($params[1]) ? $params[1] : '';
-        echo $controller;
-        echo $action;
+
         // On appelle le contrôleur
         
         // On instancie le contrôleur

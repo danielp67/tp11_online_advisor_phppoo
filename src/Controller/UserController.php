@@ -4,7 +4,6 @@
 
 namespace App\Controller ;
 
-use App\Model\Item;
 use App\Model\User;
 use App\Model\UserModel;
 
@@ -21,16 +20,6 @@ class UserController {
         $this->userModel = new UserModel();
     }
     
-    public function loginPage()
-    {
-        return require('src/View/loginView.php');
-    }
-
-    public function newUserPage()
-    {
-        return require('src/View/newUserView.php');
-    }
-
 
     public function logUser()
     {
@@ -48,7 +37,7 @@ class UserController {
         var_dump($getUserDb);
         if($checkUser){
             $this->userModel->updateUserDateLog($getUserDb);
-            $this->callItemController($getUserDb);
+            $this->sessionStart($getUserDb);
         }
         
     }
@@ -61,22 +50,27 @@ class UserController {
 
         $checkUser = $this->userModel->createNewUser($newUser);
         if($checkUser){
-            $this->callItemController($newUser);
+            $this->sessionStart($newUser);
         }
     }
 
 
 
-    public function callItemController($user)
+    public function sessionStart($user)
     {   
-       
-      //  header('Location: http://localhost/TP11_online_advisor_phppoo/items/listItemPage/'.$user['login']);
-        $itemList = new ItemController();
-        $itemList->mainItemPage($user);
-
-        
-
+      
+       $_SESSION['login'] = $user['login'];
+       $_SESSION['lastLoginAt'] = $user['lastLoginAt'];
+       header('Location: http://localhost/TP11_online_advisor_phppoo/items/listItemPage');
     
+    }
+
+
+    public function sessionDestroy()
+    {
+        session_destroy();
+        header('Location: http://localhost/TP11_online_advisor_phppoo');
+
     }
 
 

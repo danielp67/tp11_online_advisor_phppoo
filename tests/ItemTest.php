@@ -15,15 +15,19 @@ class ItemTest extends TestCase{
     private int $rate=3;
     private string $review ="Voila un tres bon livre et oui mon commentaire et long mais c'est pour le test";
     private string $userLogin ='Username';
-    private string $failitemName ='1';
-    //private int $failCategory = 42;
-    //private string $failRate='3';
+    private string $failItemName ='1';
+    private string $failCategory = '';
+    private int $failRate=8;
+    private string $failReview ="Voila un tres bon livre et oui mon commentaire et long mais c'est pour le test &é_çà&é_çéà";
+    private string $failUserLogin ='Username-failllllllllllllll';
+
+
 
     public function index(){
       $this->item = new Item($this->itemName);
     }
 
-    public function testAssertInstanceOfUser()
+    public function testAssertInstanceOfItem()
     {
       $this->index();
       $this->assertInstanceOf(Item::class, $this->item);
@@ -62,7 +66,7 @@ class ItemTest extends TestCase{
 
       $this->index();
       $this->assertIsInt($this->item->setRate($this->rate));
-      //$this->assertIsNotInt($this->item->setRate('test'));
+
     }
 
 
@@ -91,6 +95,63 @@ class ItemTest extends TestCase{
     {
       $this->index();
       $this->assertEqualsWithDelta($this->item->setDateCreation(), date('Y-m-d H:i:s'), 5);
+
+    }
+
+
+        //test fail setters
+    public function testFailSetItemName()
+    {
+      $this->expectException(Exception::class);
+    
+
+      $this->index();
+     $this->item->setItemName($this->failItemName);
+
+    }
+
+    public function testFailSetCategory()
+    {
+      $this->expectException(Exception::class);
+    
+
+      $this->index();
+      $this->item->setCategory($this->failCategory);
+
+    }
+
+    public function testFailSetRate()
+    {
+      $this->expectException(Exception::class);
+      $this->index();
+      $this->item->setRate($this->failRate);
+    }
+
+
+    public function testFailSetReview()
+    {
+      $this->expectException(Exception::class);
+
+      $this->index();
+      $this->item->setReview($this->failReview);
+
+    }
+
+
+    public function testFailSetUserLogin()
+    {
+      $this->expectException(Exception::class);
+
+      $this->index();
+      $this->item->setUserLogin($this->failUserLogin);
+    }
+
+
+    
+    public function testFailSetDateCreation()
+    { 
+      $this->index();
+      $this->assertNotEquals($this->item->setDateCreation(), '2000-11-11 11:11:11', 5);
 
     }
 

@@ -93,6 +93,14 @@ class UserTest extends TestCase{
     }
 
 
+    public function testFailSetLastLoginAt()
+    { 
+      $this->index();
+      $this->assertNotEquals($this->user->setLastLoginAt(), '2000-11-11 11:11:11', 5);
+
+    }
+
+
     public function testGetUserLogin()
     {
       $this->index();
@@ -154,7 +162,7 @@ class UserTest extends TestCase{
       );
 
       
-      $this->assertFalse($this->user->checkLogUser($user,$passForm));
+     $this->user->checkLogUser($user,$passForm);
       
     }
 
@@ -189,7 +197,7 @@ class UserTest extends TestCase{
         'pass2' => $this->pass
         );
       $this->index();
-      $this->assertIsArray($this->user->checkNewUser($user));
+      $this->user->checkNewUser($user);
 
     }
 

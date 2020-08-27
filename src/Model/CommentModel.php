@@ -23,11 +23,10 @@ class CommentModel
         return $comments;
     }
 
-    public function postComment($itemId, $user, $comment)
+    public function createNewComment($comment)
     {
-       
-        $comment = $this->db->prepare('INSERT INTO comments (item_id, user, comment, date_comment) VALUES(?, ?, ?, NOW())');
-        $affectedLines = $comment->execute(array($itemId, $user, $comment));
+        $newComment = $this->db->prepare('INSERT INTO comments (item_id, user, comment, date_comment) VALUES(?, ?, ?, ?)');
+        $affectedLines = $newComment->execute(array($comment['itemId'], $comment['userLogin'], $comment['comment'], $comment['dateCreation']));
 
         return $affectedLines;
     }

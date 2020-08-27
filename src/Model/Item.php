@@ -9,7 +9,7 @@ class Item
 {   
 
     const PATTERN_ITEMNAME = "/^(\w[ -.,!?]*){2,50}$/";
-    const PATTERN_CATEGORY = "/^(\w[ -]*){2,20}$/";
+    const PATTERN_CATEGORY = "/^(\w[ -]*){2,30}$/";
     const PATTERN_REVIEW = "/^(\w[ -.,!?]*){2,255}$/";
     const PATTERN_USERLOGIN = "/^[a-zA-Z0-9_]{2,16}$/";
     private string $itemName;
@@ -111,8 +111,6 @@ class Item
     {  
         if( $this->setCategory($item['category']) && $this->setRate($item['rate']) && $this->setReview($item['review']) && $this->setUserLogin($userLogin))
         {
-       
-
             return $this->getItem();
             
         }

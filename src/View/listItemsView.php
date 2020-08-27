@@ -1,20 +1,16 @@
-<?php $title='Liste des items' ?>
+<?php       
+
+
+$title='Liste des items' ?>
 
 <?php ob_start(); ?>
   
 
-<p>Bienvenue <?= $userLogin ?> sur Online Advisor !</p>
+<p>Bienvenue <?= $_SESSION['login'] ?> sur Online Advisor !</p>
 
-<p>Dernière connexion le  <?= $lastLoginAt ?></p>
+<p>Dernière connexion le  <?= $_SESSION['lastLoginAt'] ?></p>
 
-<p><a href="items/listItemPage">Voir la liste des items</a></p>
-
-
-<?php if($displayItems)
-{
-  ?>
-
-
+<p><a href="users/sessionDestroy">Se déconnecter</a></p>
 
 
 
@@ -34,7 +30,7 @@
                       <label for="review">Commentaire : </label>
                       <input type="text" name="review" id="review" placeholder="votre commentaire" size="50" maxlength="255" required >
                       </br>
-
+                      
                       <input type="submit" value="Envoyer" />
 
       </form>
@@ -72,9 +68,8 @@
 
   }
 
-
   $listItems->closeCursor();
-}
+
  ?>
   
 

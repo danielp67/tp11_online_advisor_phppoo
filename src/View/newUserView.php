@@ -45,7 +45,7 @@
                                 </div>
                                 <hr>
                                 <div class="form-group mt-2">
-                                    <a  href="users/loginPage" id="forConnexion">Déjà Inscrit ?</a>
+                                    <a  href="main/loginPage" id="forConnexion">Déjà Inscrit ?</a>
                                     
                                 </div>
                             </div>
