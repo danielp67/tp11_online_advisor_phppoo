@@ -78,9 +78,9 @@ class Comment
     public function checkNewComment($newcomment, $sessionComment)
     {
 
-        if( $this->setItemId($newcomment['comment']) && $this->setComment($sessionComment['item_id']) && $this->setUserLogin($sessionComment['login']))
+        if($this->setComment($newcomment['comment']) && $this->setItemId($sessionComment['itemId'])  && $this->setUserLogin($sessionComment['login']))
         {
-            var_dump($this->getComment());
+            
             return $this->getComment();
             
         }

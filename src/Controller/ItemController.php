@@ -23,6 +23,9 @@ class ItemController {
     
     public function listItemPage()
     {   
+        if($_SESSION['login'] == NULL){
+            header('Location: http://localhost/TP11_online_advisor_phppoo');
+        }
         $listItems = $this->itemModel->getItemsDb();
 
         require('src/View/listItemsView.php');
@@ -31,11 +34,15 @@ class ItemController {
 
     public function getComments()
     {
+        if($_SESSION['login'] == NULL){
+            header('Location: http://localhost/TP11_online_advisor_phppoo');
+        }
         $params = explode('/', $_GET['p']);
         $comments = new CommentModel();
         $getComments = $comments->getComments($params[2]);
-        $_SESSION['item_id'] = (int) $params[2];
+        $_SESSION['itemId'] = (int) $params[2];
         $getItem = $this->itemModel->getItemDb($params[2]);
+        
         require('src/View/itemView.php');
          
     }
@@ -43,7 +50,10 @@ class ItemController {
 
     public function addNewItem()
     {      
-
+        if($_SESSION['login'] == NULL){
+            header('Location: http://localhost/TP11_online_advisor_phppoo');
+        }
+        
         $this->item = new Item($_POST['itemName']);
         var_dump($_POST, $_SESSION['login']);
        $checkItem = $this->item->checkNewItem($_POST, $_SESSION['login']);

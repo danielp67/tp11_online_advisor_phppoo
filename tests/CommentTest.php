@@ -114,6 +114,43 @@ class CommentTest extends TestCase{
     }
 
 
+    
+    public function testGetComment()
+    {
+
+        $this->index();
+        $this->assertIsArray($this->objComment->getComment());
+        $this->assertArrayHasKey('itemId', $this->objComment->getComment());
+        $this->assertArrayHasKey('userLogin', $this->objComment->getComment());
+        $this->assertArrayHasKey('comment', $this->objComment->getComment());
+        $this->assertArrayHasKey('dateCreation', $this->objComment->getComment());
+
+    }
+
+
+
+    public function testCheckNewComment()
+    {
+
+      $this->index();
+
+      $sessionComment = array(
+        'itemId' => $this->itemId,
+        'login' => $this->userLogin,
+      );
+
+      $newcomment = array(
+        'comment' => $this->comment
+      );
+
+      $this->assertIsArray($this->objComment->checkNewComment($newcomment, $sessionComment));
+      $this->assertArrayHasKey('itemId', $this->objComment->checkNewComment($newcomment, $sessionComment));
+      $this->assertArrayHasKey('userLogin', $this->objComment->checkNewComment($newcomment, $sessionComment));
+      $this->assertArrayHasKey('comment', $this->objComment->checkNewComment($newcomment, $sessionComment));
+      $this->assertArrayHasKey('dateCreation', $this->objComment->checkNewComment($newcomment, $sessionComment));
+
+        }
+
 
 
 

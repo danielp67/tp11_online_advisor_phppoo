@@ -41,7 +41,7 @@ class UserModel
         {
             $newUser =  $this->db->prepare('INSERT INTO user (user_login, mail, pass, last_login_at) VALUES(?, ?, ?, ?)');
             $affectedLines = $newUser->execute(array($user['login'], $user['mail'], $user['pass'], $user['lastLoginAt']));
-            var_dump($affectedLines);
+            
             return $affectedLines;
 
         }
