@@ -7,7 +7,7 @@ use Exception;
 class User
 {
     const PATTERN_MAIL = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
-    const PATTERN_USERLOGIN = "/^[a-zA-Z0-9_]{2,16}$/";
+    const PATTERN_USERLOGIN = "/^[a-zA-Z0-9À-ÿ_.-]{2,16}$/";
     const PATTERN_PASS = "/^[a-zA-Z0-9_]{6,12}$/";
     private string $userLogin;
     private string $mail='';
@@ -52,7 +52,7 @@ class User
         if (! preg_match ($pattern , $pass) ){
             throw new Exception('pass est invalide');
         }
-        $this->pass = $pass;
+        $this->pass = password_hash($pass, PASSWORD_DEFAULT);
 
         return $this->pass;
     }
@@ -86,14 +86,12 @@ class User
 
 
     //méthode check log user
-    public function checkLogUser(array $user, string $passForm) :bool
+    public function checkLogUser(string $passForm, array $user) :bool
     {   
-        $this->setMail($user['mail']);
-        $this->setPass($user['pass']);
-
-        if($this->pass == $passForm){
-
-
+    
+        if(password_verify($passForm, $user['pass'])){
+            $this->setMail($user['mail']);
+            $this->setPass($passForm);
                 return true;
             }
             else{
@@ -110,9 +108,7 @@ class User
     
         if( $this->setMail($user['mail']) && $this->setPass($user['pass']) && $user['pass'] === $user['pass2'])
         {
-       
-            //hachage mdp
-            var_dump($this->getUser());
+
             return $this->getUser();
             
         }

@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 class UserTest extends TestCase{
 
     const PATTERN_MAIL = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
-    const PATTERN_USERLOGIN = "/^[a-zA-Z0-9_]{2,16}$/";
+    const PATTERN_USERLOGIN = "/^[a-zA-Z0-9À-ÿ_.-]{2,16}$/";
     const PATTERN_PASS = "/^[a-zA-Z0-9_]{6,12}$/";
     private $userLogin ='Username';
     private $mail ='test@test.com';
@@ -31,30 +31,71 @@ class UserTest extends TestCase{
 
     }
 
-    
-    public function testSetMail(){
+    /**
+     * @dataProvider additionProviderMail
+     */
+    public function testSetMail($mail){
         $pattern = self::PATTERN_MAIL;
 
         $this->index();
-        $this->assertMatchesRegularExpression($pattern, $this->user->setMail($this->mail));
-        $this->assertMatchesRegularExpression($pattern, $this->mail);
+        $this->assertMatchesRegularExpression($pattern, $this->user->setMail($mail));
+        $this->assertMatchesRegularExpression($pattern, $mail);
     }
 
-    public function testSetUserLogin(){
+    public function additionProviderMail()
+    {
+        return [
+            ['test@test.com'],
+            ['lalalla@d.fr'],
+            ['g@te.de'],
+            ['gmail-dudu@tetest.fdsfd.de']
+        ];
+    }
+
+    /**
+     * @dataProvider additionProviderUserLogin
+     */
+    public function testSetUserLogin($userLogin){
       $pattern = self::PATTERN_USERLOGIN;
 
       $this->index();
-      $this->assertMatchesRegularExpression($pattern,  $this->user->setUserLogin($this->userLogin));
-      $this->assertMatchesRegularExpression($pattern, $this->userLogin);
+      $this->assertMatchesRegularExpression($pattern,  $this->user->setUserLogin($userLogin));
+      $this->assertMatchesRegularExpression($pattern, $userLogin);
     }
 
 
-    public function testSetPass(){
+    public function additionProviderUserLogin()
+    {
+        return [
+            ['fgrej-fdssd'],
+            ['élaHfjfiod'],
+            ['ÀteÀde_86'],
+            ['fdsff.dfzadde'],
+            ['Username']
+        ];
+    }
+
+    /**
+     * @dataProvider additionProviderPass
+     */
+    public function testSetPass($pass){
       $pattern = self::PATTERN_PASS;
 
       $this->index();
-      $this->assertMatchesRegularExpression($pattern,  $this->user->setPass($this->pass));
-      $this->assertMatchesRegularExpression($pattern, $this->pass);
+      $this->assertTrue(password_verify($pass, $this->user->setPass($pass)));
+      $this->assertMatchesRegularExpression($pattern, $pass);
+    }
+
+    
+
+    public function additionProviderPass()
+    {
+        return [
+            ['fsd456'],
+            ['HlHfjfiod'],
+            ['ateade_86'],
+            ['12lettresUni']
+        ];
     }
 
     public function testSetLastLoginAt()
@@ -64,32 +105,72 @@ class UserTest extends TestCase{
 
     }
 
-
-
-    
-    public function testFailSetMail()
+     /**
+     * @dataProvider additionProviderFailMail
+     */
+    public function testFailSetMail($failMail)
     {
       $this->expectException(Exception::class);
       
       $this->index();
-      $this->user->setMail($this->failMail);
+      $this->user->setMail($failMail);
     }
 
-    public function testFailSetUserLogin()
+    public function additionProviderFailMail()
+    {
+        return [
+            ['test@testcom'],
+            ['lalalla@.fr'],
+            ['@.de'],
+            ['gmail-dudu@test.fdsfd.deux'],
+            ['12lettresUni']
+        ];
+    }
+
+     /**
+     * @dataProvider additionProviderFailUserLogin
+     */
+    public function testFailSetUserLogin($failUserLogin)
     {
       $this->expectException(Exception::class);
 
       $this->index();
-      $this->user->setUserLogin($this->failUserLogin);
+      $this->user->setUserLogin($failUserLogin);
     }
 
 
-    public function testFailSetPass()
+    public function additionProviderFailUserLogin()
+    {
+        return [
+            ['test%testcom'],
+            ['lalalfr7897987898585'],
+            ['#.de'],
+            ['gmail-fd.d*'],
+            ['12lettr Uni']
+        ];
+    }
+
+    /**
+     * @dataProvider additionProviderFailPass
+     */
+    public function testFailSetPass($failPass)
     {
       $this->expectException(Exception::class);
 
       $this->index();
-      $this->user->setPass($this->failPass);
+      $this->user->setPass($failPass);
+    }
+
+
+    public function additionProviderFailPass()
+    {
+        return [
+            ['test%testcom'],
+            ['lalalfr7897987898585'],
+            ['#.de'],
+            ['gmail-fd.d*'],
+            ['12lettr Uni']
+        ];
     }
 
 
@@ -133,18 +214,15 @@ class UserTest extends TestCase{
     { 
       $this->index();
       
-      $passForm =$this->pass;
+      $passForm = $this->pass;
       $user = array(
         'login' => $this->userLogin,
         'mail' => $this->mail,
-        'pass' => $this->pass,
+        'pass' => password_hash($this->pass, PASSWORD_DEFAULT),
         'lastLoginAt' => $this->user->setLastLoginAt(),
       );
 
-      
-      
-      $this->assertTrue($this->user->checkLogUser($user,$passForm));
-
+      $this->assertTrue($this->user->checkLogUser($passForm, $user));
     }
 
     public function testFailCheckLogUser()
@@ -157,12 +235,12 @@ class UserTest extends TestCase{
       $user = array(
         'login' => $this->userLogin,
         'mail' => $this->mail,
-        'pass' => $this->pass,
+        'pass' => password_hash($this->pass, PASSWORD_DEFAULT),
         'lastLoginAt' => $this->user->setLastLoginAt(),
       );
 
       
-     $this->user->checkLogUser($user,$passForm);
+     $this->user->checkLogUser($passForm, $user);
       
     }
 

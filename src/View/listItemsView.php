@@ -1,79 +1,111 @@
-<?php       
+<?php
 
-
-$title='Liste des items' ?>
+$title = 'Liste des items' ?>
 
 <?php ob_start(); ?>
+
+
+<div class="row px-5 py-5">
+  <div class="col-12">
+    <h1>Bienvenue <?= $_SESSION['login'] ?> sur Online Advisor !</h1>
+    <div class="row">
+      <div class="col-6">
+        <p>Dernière connexion le <?= $_SESSION['lastLoginAt'] ?></p>
+      </div>
+      <div class="col-6">
+        <p><a class="btn btn-danger" href="users/sessionDestroy">Se déconnecter</a></p>
+      </div>
+    </div>
+  </div>
+
   
+  <div class="col-10 offset-1">
+    <div class="card mt-3 bg-light">
+     
+        <form method="post" action="items/addNewItem" class="news">
+          <legend class=" card-header">Nouveau item :</legend>
+          <div class="card-body">
+          <div class="form-inline mt-1">
+          <label for="itemName" class="col-3">Item : </label>
+          <input class="form-control col-3" type="text" name="itemName" id="itemName" minlength="2" maxlength="50" required>
+          </div>
 
-<p>Bienvenue <?= $_SESSION['login'] ?> sur Online Advisor !</p>
+          <div class="form-inline mt-1">
+          <label for="category"  class="col-3">Categorie : </label>
+          <input class="form-control col-3" type="text" name="category" id="category" minlength="2" maxlength="50" required>
+          </div>
 
-<p>Dernière connexion le  <?= $_SESSION['lastLoginAt'] ?></p>
+          <div class="form-inline mt-1">
+          <label for="rate"  class="col-3" >Note : </label>
+          <input class="form-control col-1" type="number" name="rate" id="rate" min="1" max="5" required>  /5
+          </div>
+          <div class="form-inline mt-3">
+          <label for="review"  class="col-3">Commentaire : </label>
+          <input class="form-control col-6" type="text" name="review" id="review" placeholder="votre commentaire" size="50" maxlength="255" required>
+          </div>
 
-<p><a href="users/sessionDestroy">Se déconnecter</a></p>
+          <input class="mt-2 btn btn-success" type="submit" value="Envoyer" />
 
+        </form>
+      </div>
+    </div>
 
+    <h4 class="mt-4">Derniers items notés :</h4>
 
-<p class="news">Nouveau item :</p>
-
-      <form method="post" action="items/addNewItem" class="news">
-
-                      <label for="itemName">Item : </label>
-                      <input type="text" name="itemName" id="itemName"  size="30" minlength="2" maxlength="50" required >
-                      </br>
-                      <label for="category">Categorie : </label>
-                      <input type="text" name="category" id="category"  size="30" minlength="2" maxlength="50" required >
-                      </br>
-                      <label for="rate">Note : </label>
-                      <input type="number" name="rate" id="rate" min="1" max="5" required >
-                      </br>
-                      <label for="review">Commentaire : </label>
-                      <input type="text" name="review" id="review" placeholder="votre commentaire" size="50" maxlength="255" required >
-                      </br>
-                      
-                      <input type="submit" value="Envoyer" />
-
-      </form>
-
-
-<p class='news'>Derniers items notés :</p>
-
-<?php
-
-
-
-
-  while($affiche_message = $listItems->fetch()){
-
- ?>
-<div class="news">
-    <h3>
-        <?php echo htmlspecialchars($affiche_message['item_name']); ?>
-        <?php echo htmlspecialchars($affiche_message['category']); ?>
-        <em>le <?php echo $affiche_message['date_creation']; ?></em>
-        <?php echo htmlspecialchars($affiche_message['rate']); ?>
-    </h3>
-    
-    <p>
     <?php
-    // On affiche le contenu du billet
-    echo nl2br(htmlspecialchars($affiche_message['review']));
-    echo nl2br(htmlspecialchars($affiche_message['user']));
+
+
+
+
+    while ($affiche_message = $listItems->fetch()) {
+
     ?>
-    <br />
-    <em><a href="items/getComments/<?php echo $affiche_message['id']; ?>">Commentaires</a></em>
-    </p>
+      <div class="card mt-3 bg-light">
+        
+          <div class="card-header">
+          <div class="row">
+          <div class="col-4 offset-4 text-center"><h3><?= htmlspecialchars($affiche_message['item_name']); ?></h3>
+          </div>
+          <div class="col-4 text-right"><h3>Note : <?= htmlspecialchars($affiche_message['rate']); ?>/5</h3>
+          </div>
+        </div>
+          </div>
+
+          <div class="card-body">
+            <div class="card-text font-weight-bold"> De <em><?= nl2br(htmlspecialchars($affiche_message['user'])); ?></em> : 
+              <?= nl2br(htmlspecialchars($affiche_message['review'])); ?>
+             
+              <br>
+              <a class="mt-2 btn btn-primary" href="items/getComments/<?php echo $affiche_message['id']; ?>">Voir les commentaires</a>
+            </div>
+          </div>
+
+
+          <div class="card-footer">
+          <div class="row">
+            <div class="col-6">Catégorie : 
+              <?= htmlspecialchars($affiche_message['category']); ?>
+            </div>
+            <div class="col-6">Date : 
+              <?= $affiche_message['date_creation']; ?>
+            </div>
+          </div>
+          </div>
+         
+          
+        
+      </div>
+    <?php
+
+    }
+
+    $listItems->closeCursor();
+
+    ?>
+  </div>
 </div>
-<?php
 
-  }
-
-  $listItems->closeCursor();
-
- ?>
-  
 
 <?php $content = ob_get_clean(); ?>
 
 <?php require('template.php'); ?>
-

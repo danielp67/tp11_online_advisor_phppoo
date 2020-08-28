@@ -9,8 +9,6 @@ use App\View;
 
 class MainController {
 
-
-    
     public function loginPage()
     {
         return require('src/View/loginView.php');
@@ -20,8 +18,6 @@ class MainController {
     {
         return require('src/View/newUserView.php');
     }
-
-
 
 }
 
