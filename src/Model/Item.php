@@ -8,14 +8,15 @@ use Exception;
 class Item
 {   
 
-    const PATTERN_ITEMNAME = "/^(\w[ -.,!?]*){2,50}$/";
-    const PATTERN_CATEGORY = "/^(\w[ -]*){2,30}$/";
-    const PATTERN_REVIEW = "/^(\w[ -.,!?]*){2,255}$/";
-    const PATTERN_USERLOGIN = "/^[a-zA-Z0-9_]{2,16}$/";
+    const PATTERN_ITEMNAME = "/^[a-zA-Z0-9À-ÿ .'&()-]{2,50}$/";
+    const PATTERN_CATEGORY = "/^[a-zA-Z0-9À-ÿ .-]{2,30}$/";
+    const PATTERN_REVIEW = "/^[a-zA-Z0-9À-ÿ .,?!'&()-]{2,255}$/";
+    const PATTERN_USERLOGIN = "/^[a-zA-Z0-9À-ÿ_.-]{2,16}$/";
     private string $itemName;
     private string $category='';
     private int $rate=1;
     private string $review='';
+    private int $userId=0;
     private string $userLogin='';
     private string $dateCreation;
 
@@ -40,7 +41,7 @@ class Item
 
     public function setCategory(string $category) :string
     {
-        $pattern = self::PATTERN_ITEMNAME;
+        $pattern = self::PATTERN_CATEGORY;
         if (! preg_match ($pattern , $category) ){
             throw new Exception('La categorie est invalide');
         }
@@ -72,6 +73,19 @@ class Item
         return $this->review;
     }
 
+    
+    
+    public function setUserId(int $userId) :int
+    {
+        $userId = (int) $userId;
+        if(!is_int($userId) || $userId<1){
+        throw new Exception('User Id invalide');
+    }
+        $this->userId = $userId;
+        
+        return $this->userId;
+    }
+
 
     public function setUserLogin(string $userLogin)  :string
     {
@@ -100,6 +114,7 @@ class Item
                 'category' => $this->category,
                 'rate' => $this->rate,
                 'review' => $this->review,
+                'userId'  => $this->userId,
                 'userLogin' => $this->userLogin,
                 'dateCreation' => $this->dateCreation
 
@@ -107,10 +122,11 @@ class Item
         return $item;
     }
 
-    public function checkNewItem(array $item, string $userLogin) :array
+    public function checkNewItem(array $item, array $sessionItem) :array
     {  
-        if( $this->setCategory($item['category']) && $this->setRate($item['rate']) && $this->setReview($item['review']) && $this->setUserLogin($userLogin))
+        if( $this->setCategory($item['category']) && $this->setRate($item['rate']) && $this->setReview($item['review']) && $this->setUserId($sessionItem['userId']) && $this->setUserLogin($sessionItem['login']))
         {
+          
             return $this->getItem();
             
         }

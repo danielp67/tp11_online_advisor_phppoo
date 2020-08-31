@@ -8,12 +8,13 @@ class UserTest extends TestCase{
     const PATTERN_MAIL = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
     const PATTERN_USERLOGIN = "/^[a-zA-Z0-9À-ÿ_.-]{2,16}$/";
     const PATTERN_PASS = "/^[a-zA-Z0-9_]{6,12}$/";
-    private $userLogin ='Username';
-    private $mail ='test@test.com';
-    private $pass='passmail';
-    private $failUserLogin ='1';
-    private $failMail ='testtestcom';
-    private $failPass='passmailtooooolong';
+    private int $userId =5;
+    private string $userLogin ='Username';
+    private string $mail ='test@test.com';
+    private string $pass='passmail';
+    private string $failUserLogin ='1';
+    private string $failMail ='testtestcom';
+    private string $failPass='passmailtooooolong';
     private $user;
 
     public function index(){
@@ -24,12 +25,32 @@ class UserTest extends TestCase{
     {
       $this->index();
       $this->assertInstanceOf(User::class, $this->user);
+      $this->assertClassHasAttribute('userId', User::class);
       $this->assertClassHasAttribute('userLogin', User::class);
       $this->assertClassHasAttribute('mail', User::class);
       $this->assertClassHasAttribute('pass', User::class);
       $this->assertClassHasAttribute('lastLoginAt', User::class);
 
     }
+
+     /**
+     * @dataProvider additionProviderUserId
+     */
+    public function testSetUserId($userId){
+
+      $this->index();
+      $this->assertIsInt($this->user->setUserId($userId));
+  }
+
+  public function additionProviderUserId()
+  {
+      return [
+          [1],
+          [23],
+          [258],
+          [45.5]
+      ];
+  }
 
     /**
      * @dataProvider additionProviderMail
@@ -104,6 +125,26 @@ class UserTest extends TestCase{
       $this->assertEqualsWithDelta($this->user->setLastLoginAt(), date('Y-m-d H:i:s'), 5);
 
     }
+
+         /**
+     * @dataProvider additionProviderFailUserId
+     */
+    public function testFailSetUserId($userId){
+      $this->expectException(Exception::class);
+
+      $this->index();
+      $this->user->setUserId($userId);
+  }
+
+  public function additionProviderFailUserId()
+  {
+      return [
+          [-1],
+          [-258],
+          [-9258],
+          [-45.99]
+      ];
+  }
 
      /**
      * @dataProvider additionProviderFailMail
@@ -202,6 +243,7 @@ class UserTest extends TestCase{
     {
       $this->index();
       $this->assertIsArray($this->user->getUser());
+      $this->assertArrayHasKey('id', $this->user->getUser());
       $this->assertArrayHasKey('login', $this->user->getUser());
       $this->assertArrayHasKey('mail', $this->user->getUser());
       $this->assertArrayHasKey('pass', $this->user->getUser());
@@ -216,6 +258,7 @@ class UserTest extends TestCase{
       
       $passForm = $this->pass;
       $user = array(
+        'id' => $this->userId,
         'login' => $this->userLogin,
         'mail' => $this->mail,
         'pass' => password_hash($this->pass, PASSWORD_DEFAULT),

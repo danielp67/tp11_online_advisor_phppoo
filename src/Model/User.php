@@ -9,6 +9,7 @@ class User
     const PATTERN_MAIL = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
     const PATTERN_USERLOGIN = "/^[a-zA-Z0-9À-ÿ_.-]{2,16}$/";
     const PATTERN_PASS = "/^[a-zA-Z0-9_]{6,12}$/";
+    private int $userId=0;
     private string $userLogin;
     private string $mail='';
     private string $pass='';
@@ -21,6 +22,17 @@ class User
     }
     
     //setters
+    public function setUserId(int $userId) :int
+    {   $userId = (int) $userId;
+        if(!is_int($userId) || $userId<1){
+        throw new Exception('User Id invalide');
+    }
+        $this->userId = $userId;
+        
+        return $this->userId;
+    }
+
+
     public function setMail(string $mail) :string
     {
         $pattern = self::PATTERN_MAIL;
@@ -71,15 +83,15 @@ class User
         return $this->userLogin;
     }
 
+
     public function getUser() :array
     {
-
         $user = array(
+                'id' => $this->userId,
                 'login' => $this->userLogin,
                 'mail' => $this->mail,
                 'pass' => $this->pass,
                 'lastLoginAt' => $this->lastLoginAt,
-
         );
         return $user;
     }
@@ -90,8 +102,10 @@ class User
     {   
     
         if(password_verify($passForm, $user['pass'])){
+            $this->setUserId($user['id']);
             $this->setMail($user['mail']);
             $this->setPass($passForm);
+            
                 return true;
             }
             else{
@@ -104,13 +118,10 @@ class User
 
     //méthode check new user
     public function checkNewUser(array $user) :array
-    {   
-    
+    {     
         if( $this->setMail($user['mail']) && $this->setPass($user['pass']) && $user['pass'] === $user['pass2'])
         {
-
-            return $this->getUser();
-            
+            return $this->getUser();    
         }
         else
         {

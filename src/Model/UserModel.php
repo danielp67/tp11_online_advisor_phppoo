@@ -17,7 +17,7 @@ class UserModel
     }
 
     
-    public function checkUserExist(string $userLogin, string $mail)
+    public function checkUserExist(string $userLogin, string $mail) :array
     {
         
         $req = $this->db->prepare('SELECT id, user_login, mail, pass FROM user  WHERE user_login = ? OR mail = ?');
@@ -68,7 +68,7 @@ class UserModel
 
   
 
-    public function updateUserDateLog($user)
+    public function updateUserDateLog(array $user) :bool
     {
         $req =  $this->db->prepare('UPDATE user SET last_login_at = ? WHERE user_login = ?');
         $req->execute(array($user['lastLoginAt'], $user['login']));
@@ -78,7 +78,7 @@ class UserModel
     }
 
 
-    public function deleteUser($userLogin)
+    public function deleteUser(string $userLogin) :bool
     {
         $req =  $this->db->prepare('DELETE FROM item  WHERE id = ?');
         $req->execute(array($userLogin));

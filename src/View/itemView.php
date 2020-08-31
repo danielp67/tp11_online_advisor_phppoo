@@ -37,7 +37,7 @@ $title = 'Poster un nouveau commentaire' ?>
         </div>
         
         <div class="card-body">
-          <div class="card-text font-weight-bold">De <em><?= nl2br(htmlspecialchars($getItem['user'])); ?></em> : <?= nl2br(htmlspecialchars($getItem['review'])); ?>
+          <div class="card-text font-weight-bold">De <em><?= nl2br(htmlspecialchars($getItem['user_login'])); ?></em> : <?= nl2br(htmlspecialchars($getItem['review'])); ?>
         </div>
         </div>
         
@@ -61,14 +61,12 @@ $title = 'Poster un nouveau commentaire' ?>
       <div class="card my-3 bg-light">
         <div class="card-body">
           <div class="card-title">
-            <?= htmlspecialchars($affiche_message['user']); ?>
+            <?= htmlspecialchars($affiche_message['user_login']); ?>
               <em>le <?= $affiche_message['date_comment']; ?></em>
             
           </div>
 
           <h5><?= nl2br(htmlspecialchars($affiche_message['comment'])); ?></h5>
-
-          
 
         </div>
       </div>

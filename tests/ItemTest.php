@@ -5,16 +5,17 @@ use PHPUnit\Framework\TestCase;
 
 class ItemTest extends TestCase{
 
-    const PATTERN_ITEMNAME = "/^(\w[ -.,!?]*){2,50}$/";
-    const PATTERN_CATEGORY = "/^(\w[ -]*){2,20}$/";
-    const PATTERN_REVIEW = "/^(\w[ -.,!?]*){2,255}$/";
-    const PATTERN_USERLOGIN = "/^[a-zA-Z0-9_]{2,16}$/";
+    const PATTERN_ITEMNAME = "/^[a-zA-Z0-9À-ÿ .'&()-]{2,50}$/";
+    const PATTERN_CATEGORY = "/^[a-zA-Z0-9À-ÿ .-]{2,30}$/";
+    const PATTERN_REVIEW = "/^[a-zA-Z0-9À-ÿ .,?!'&()-]{2,255}$/";
+    const PATTERN_USERLOGIN = "/^[a-zA-Z0-9À-ÿ_.-]{2,16}$/";
     private object $item;
     private string $itemName ='Tintin et Milou';
     private string $category ='Livre';
     private int $rate=3;
     private string $review ="Voila un tres bon livre et oui mon commentaire et long mais c'est pour le test";
     private string $userLogin ='Username';
+    private int $userId =3;
     private string $failItemName ='1';
     private string $failCategory = '';
     private int $failRate=8;
@@ -35,58 +36,152 @@ class ItemTest extends TestCase{
       $this->assertClassHasAttribute('category', Item::class);
       $this->assertClassHasAttribute('rate', Item::class);
       $this->assertClassHasAttribute('review', Item::class);
+      $this->assertClassHasAttribute('userId', Item::class);
       $this->assertClassHasAttribute('userLogin', Item::class);
       $this->assertClassHasAttribute('dateCreation', Item::class);
 
     }
 
 
-    public function testSetItemName()
+    
+
+     /**
+     * @dataProvider additionProviderItemName
+     */
+    public function testSetItemName($itemName)
     {
 
       $pattern = self::PATTERN_ITEMNAME;
 
       $this->index();
-      $this->assertMatchesRegularExpression($pattern, $this->item->setItemName($this->itemName));
+      $this->assertMatchesRegularExpression($pattern, $this->item->setItemName($itemName));
 
     }
+    
+    public function additionProviderItemName()
+    {
+        return [
+            ['Tintin et Milou'],
+            ['élaH fjfiod'],
+            ['ÀteÀde 86'],
+            ['fdsff. dfzadde'],
+            ['User&name']
+        ];
+    }
 
-    public function testSetCategory()
+
+    /**
+     * @dataProvider additionProviderCategory
+     */
+    public function testSetCategory($category)
     {
 
       $pattern = self::PATTERN_CATEGORY;
 
       $this->index();
-      $this->assertMatchesRegularExpression($pattern, $this->item->setCategory($this->category));
+      $this->assertMatchesRegularExpression($pattern, $this->item->setCategory($category));
 
     }
 
-    public function testSetRate()
+    public function additionProviderCategory()
+    {
+        return [
+            ['Tintin et Milou'],
+            ['élaH fjfiod'],
+            ['ÀteÀde 86'],
+            ['fdsff. dfzadde'],
+            ['Username']
+        ];
+    }
+
+      /**
+     * @dataProvider additionProviderRate
+     */
+    public function testSetRate($rate)
     {
 
       $this->index();
-      $this->assertIsInt($this->item->setRate($this->rate));
+      $this->assertIsInt($this->item->setRate($rate));
 
     }
 
+    public function additionProviderRate()
+    {
+        return [
+            [1],
+            [2],
+            [3],
+            [4],
+            [5]
+        ];
+    }
 
-    public function testSetReview()
+    /**
+     * @dataProvider additionProviderReview
+     */
+    public function testSetReview($review)
     {
 
       $pattern = self::PATTERN_REVIEW;
 
       $this->index();
-      $this->assertMatchesRegularExpression($pattern, $this->item->setReview($this->review));
+      $this->assertMatchesRegularExpression($pattern, $this->item->setReview($review));
 
     }
 
+ 
+    public function additionProviderReview()
+    {
+        return [
+            ['lalalfr 78979878    tu       ytry    (blabla)      98585'],
+            ['élaH fjfiod c\'est vrai'],
+            ['ÀteÀde 86 '],
+            ['fdsff. dfzadde ? bla-bla'],
+            ['Username& !!!!!']
+        ];
+    }
 
-    public function testSetUserLogin()
+
+    /**
+     * @dataProvider additionProviderUserId
+     */
+    public function testSetUserId($userId){
+
+      $this->index();
+      $this->assertIsInt($this->item->setUserId($userId));
+  }
+
+  public function additionProviderUserId()
+  {
+      return [
+          [1],
+          [23],
+          [258],
+          [45.5]
+      ];
+  }
+
+    
+    /**
+     * @dataProvider additionProviderUserLogin
+     */
+    public function testSetUserLogin($userLogin)
     {
       $pattern = self::PATTERN_USERLOGIN;
 
       $this->index();
-      $this->assertMatchesRegularExpression($pattern,  $this->item->setUserLogin($this->userLogin));
+      $this->assertMatchesRegularExpression($pattern,  $this->item->setUserLogin($userLogin));
+    }
+
+    public function additionProviderUserLogin()
+    {
+        return [
+            ['fgrej-fdssd'],
+            ['élaHfjfiod'],
+            ['ÀteÀde_86'],
+            ['fdsff.dfzadde'],
+            ['Username']
+        ];
     }
 
 
@@ -100,51 +195,149 @@ class ItemTest extends TestCase{
 
 
         //test fail setters
-    public function testFailSetItemName()
+
+    /**
+     * @dataProvider additionProviderFailItemName
+     */
+    public function testFailSetItemName($failItemName)
     {
       $this->expectException(Exception::class);
     
 
       $this->index();
-     $this->item->setItemName($this->failItemName);
+     $this->item->setItemName($failItemName);
 
     }
 
-    public function testFailSetCategory()
+    public function additionProviderFailItemName()
+    {
+        return [
+            ['m'],
+            ['lalalfr 78979878    tu       ytry   e  thtr           98585'],
+            ['#.de'],
+            ['gmail-fd.d*'],
+            ['12lettr[ Uni']
+        ];
+    }
+
+
+     /**
+     * @dataProvider additionProviderFailCategory
+     */
+    public function testFailSetCategory($failCategory)
     {
       $this->expectException(Exception::class);
     
 
       $this->index();
-      $this->item->setCategory($this->failCategory);
+      $this->item->setCategory($failCategory);
 
     }
 
-    public function testFailSetRate()
+    public function additionProviderFailCategory()
+    {
+        return [
+            ['m'],
+            ['lalalfr 78979878    tu       ytry    (blabla)      98585'],
+            ['#.de'],
+            ['gmail-fd.d*'],
+            ['12lettr& Uni']
+        ];
+    }
+
+      /**
+     * @dataProvider additionProviderFailRate
+     */
+    public function testFailSetRate($failRate)
     {
       $this->expectException(Exception::class);
       $this->index();
-      $this->item->setRate($this->failRate);
+      $this->item->setRate($failRate);
+    }
+
+    public function additionProviderFailRate()
+    {
+        return [
+            [6],
+            [-1],
+            [0],
+            [75],
+        ];
     }
 
 
-    public function testFailSetReview()
+
+
+
+     /**
+     * @dataProvider additionProviderFailReview
+     */
+    public function testFailSetReview($failReview)
     {
       $this->expectException(Exception::class);
 
       $this->index();
-      $this->item->setReview($this->failReview);
+      $this->item->setReview($failReview);
 
+    }
+    
+
+    public function additionProviderFailReview()
+    {
+        return [
+            ['m'],
+            ['lalalfr 78979878    tu       ytry    (blabla)      98585  lalalfr 78979878    tu       ytry    (blabla)      98585   lalalfr 78979878    tu       ytry    (blabla)      98585  lalalfr 78979878    tu       ytry    (blabla)      98585  lalalfr 78979878    tu       ytry    (blabla)      98585'],
+            ['#.de'],
+            ['gmail-fd.d*'],
+            ['12lettr[ Uni']
+        ];
     }
 
 
-    public function testFailSetUserLogin()
+     /**
+     * @dataProvider additionProviderFailUserId
+     */
+    public function testFailSetUserId($userId){
+      $this->expectException(Exception::class);
+
+      $this->index();
+      $this->item->setUserId($userId);
+  }
+
+  public function additionProviderFailUserId()
+  {
+      return [
+          [-1],
+          [-258],
+          [-9258],
+          [-45.99]
+      ];
+  }
+
+
+    /**
+     * @dataProvider additionProviderFailUserLogin
+     */
+    public function testFailSetUserLogin($failUserLogin)
     {
       $this->expectException(Exception::class);
 
       $this->index();
-      $this->item->setUserLogin($this->failUserLogin);
+      $this->item->setUserLogin($failUserLogin);
     }
+
+
+    public function additionProviderFailUserLogin()
+    {
+        return [
+            ['test%testcom'],
+            ['lalalfr7897987898585'],
+            ['#.de'],
+            ['gmail-fd.d*'],
+            ['12lettr Uni']
+        ];
+    }
+
 
 
     
@@ -165,6 +358,7 @@ class ItemTest extends TestCase{
       $this->assertArrayHasKey('category', $this->item->getItem());
       $this->assertArrayHasKey('rate', $this->item->getItem());
       $this->assertArrayHasKey('review', $this->item->getItem());
+      $this->assertArrayHasKey('userId', $this->item->getItem());
       $this->assertArrayHasKey('userLogin', $this->item->getItem());
       $this->assertArrayHasKey('dateCreation', $this->item->getItem());
      
@@ -180,16 +374,20 @@ class ItemTest extends TestCase{
         'category' => $this->category,
         'rate' => $this->rate,
         'review' => $this->review,
-        'userLogin' => $this->userLogin,
       );
 
-      $userLogin = $this->userLogin;
+      $userLogin = array(
+        'userId' => $this->userId,
+        'login' => $this->userLogin,
+
+      );
 
       $this->assertIsArray($this->item->checkNewItem($item, $userLogin));
       $this->assertArrayHasKey('itemName', $this->item->checkNewItem($item, $userLogin));
       $this->assertArrayHasKey('category', $this->item->checkNewItem($item, $userLogin));
       $this->assertArrayHasKey('rate', $this->item->checkNewItem($item, $userLogin));
       $this->assertArrayHasKey('review', $this->item->checkNewItem($item, $userLogin));
+      $this->assertArrayHasKey('userId', $this->item->checkNewItem($item, $userLogin));
       $this->assertArrayHasKey('userLogin', $this->item->checkNewItem($item, $userLogin));
       $this->assertArrayHasKey('dateCreation', $this->item->checkNewItem($item, $userLogin));
 

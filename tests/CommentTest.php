@@ -5,10 +5,11 @@ use PHPUnit\Framework\TestCase;
 
 class CommentTest extends TestCase{
 
-    const PATTERN_COMMENT = "/^(\w[ -.,!?]*){2,255}$/";
-    const PATTERN_USERLOGIN = "/^[a-zA-Z0-9_]{2,16}$/";
+    const PATTERN_COMMENT = "/^[a-zA-Z0-9À-ÿ .,?!'&()-]{2,255}$/";
+    const PATTERN_USERLOGIN = "/^[a-zA-Z0-9À-ÿ_.-]{2,16}$/";
     private object $objComment;
     private int $itemId =3;
+    private int $userId =3;
     private string $comment ="Voila un tres bon livre et oui mon commentaire et long mais c'est pour le test";
     private string $userLogin ='Username';
     private int $failItemId =0;
@@ -26,39 +27,102 @@ class CommentTest extends TestCase{
       $this->index();
       $this->assertInstanceOf(Comment::class, $this->objComment);
       $this->assertClassHasAttribute('itemId', Comment::class);
+      $this->assertClassHasAttribute('userId', Comment::class);
       $this->assertClassHasAttribute('userLogin', Comment::class);
       $this->assertClassHasAttribute('comment', Comment::class);
       $this->assertClassHasAttribute('dateCreation', Comment::class);
 
     }
 
-
-    public function testSetItemId()
+     /**
+     * @dataProvider additionProviderItemId
+     */
+    public function testSetItemId($itemId)
     {
       $this->index();
-      $this->assertIsInt($this->objComment->setItemId($this->itemId));
+      $this->assertIsInt($this->objComment->setItemId($itemId));
+    }
+
+    public function additionProviderItemId()
+    {
+        return [
+            [1],
+            [23],
+            [258],
+            [45.5]
+        ];
     }
 
 
-    
-    public function testSetComment()
-    {
 
+
+      /**
+     * @dataProvider additionProviderUserId
+     */
+    public function testSetUserId($userId){
+
+      $this->index();
+      $this->assertIsInt($this->objComment->setUserId($userId));
+  }
+
+  public function additionProviderUserId()
+  {
+      return [
+          [1],
+          [23],
+          [258],
+          [45.5]
+      ];
+  }
+
+
+     /**
+     * @dataProvider additionProviderComment
+     */
+    public function testSetComment($comment)
+    {
       $pattern = self::PATTERN_COMMENT;
 
       $this->index();
-      $this->assertMatchesRegularExpression($pattern, $this->objComment->setComment($this->comment));
+      $this->assertMatchesRegularExpression($pattern, $this->objComment->setComment($comment));
 
     }
 
+    public function additionProviderComment()
+    {
+        return [
+            ['lalalfr 78979878    tu       ytry    (blabla)      98585'],
+            ['élaH fjfiod c\'est vrai'],
+            ['ÀteÀde 86 '],
+            ['fdsff. dfzadde ? bla-bla'],
+            ['Username& !!!!!']
+        ];
+    }
 
-    public function testSetUserLogin()
+
+        /**
+     * @dataProvider additionProviderUserLogin
+     */
+    public function testSetUserLogin($userLogin)
     {
       $pattern = self::PATTERN_USERLOGIN;
 
       $this->index();
-      $this->assertMatchesRegularExpression($pattern,  $this->objComment->setUserLogin($this->userLogin));
+      $this->assertMatchesRegularExpression($pattern,  $this->objComment->setUserLogin($userLogin));
     }
+
+    public function additionProviderUserLogin()
+    {
+        return [
+            ['fgrej-fdssd'],
+            ['élaHfjfiod'],
+            ['ÀteÀde_86'],
+            ['fdsff.dfzadde'],
+            ['Username']
+        ];
+    }
+
+     
 
 
     
@@ -74,36 +138,97 @@ class CommentTest extends TestCase{
 
 
     //test fail setters
-    public function testFailSetItemId()
+    
+      /**
+     * @dataProvider additionProviderFailItemId
+     */
+    public function testFailSetItemId($failItemId)
     {
       $this->expectException(Exception::class);
     
 
       $this->index();
-      $this->objComment->setItemId($this->failItemId);
+      $this->objComment->setItemId($failItemId);
 
     }
 
+  public function additionProviderFailItemId()
+  {
+      return [
+          [-1],
+          [-258],
+          [-9258],
+          [-45.99]
+      ];
+  }
 
 
-    public function testFailSetComment()
+      /**
+     * @dataProvider additionProviderFailUserId
+     */
+    public function testFailSetUserId($userId){
+      $this->expectException(Exception::class);
+
+      $this->index();
+      $this->objComment->setUserId($userId);
+  }
+
+  public function additionProviderFailUserId()
+  {
+      return [
+          [-1],
+          [-258],
+          [-9258],
+          [-45.99]
+      ];
+  }
+
+
+    /**
+     * @dataProvider additionProviderFailComment
+     */
+    public function testFailSetComment($failComment)
     {
       $this->expectException(Exception::class);
 
       $this->index();
-      $this->objComment->setComment($this->failComment);
+      $this->objComment->setComment($failComment);
+    }
 
+    public function additionProviderFailComment()
+    {
+        return [
+            ['m'],
+            ['lalalfr 78979878    tu       ytry    (blabla)      98585  lalalfr 78979878    tu       ytry    (blabla)      98585   lalalfr 78979878    tu       ytry    (blabla)      98585  lalalfr 78979878    tu       ytry    (blabla)      98585  lalalfr 78979878    tu       ytry    (blabla)      98585'],
+            ['#.de'],
+            ['gmail-fd.d*'],
+            ['12lettr[ Uni']
+        ];
     }
 
 
-    public function testFailSetUserLogin()
+   /**
+     * @dataProvider additionProviderFailUserLogin
+     */
+    public function testFailSetUserLogin($failUserLogin)
     {
       $this->expectException(Exception::class);
 
       $this->index();
-      $this->objComment->setUserLogin($this->failUserLogin);
+      $this->objComment->setUserLogin($failUserLogin);
     }
 
+
+    public function additionProviderFailUserLogin()
+    {
+        return [
+            ['test%testcom'],
+            ['lalalfr7897987898585'],
+            ['#.de'],
+            ['gmail-fd.d*'],
+            ['12lettr Uni']
+        ];
+    }
 
     
     public function testFailSetDateCreation()
@@ -121,6 +246,7 @@ class CommentTest extends TestCase{
         $this->index();
         $this->assertIsArray($this->objComment->getComment());
         $this->assertArrayHasKey('itemId', $this->objComment->getComment());
+        $this->assertArrayHasKey('userId', $this->objComment->getComment());
         $this->assertArrayHasKey('userLogin', $this->objComment->getComment());
         $this->assertArrayHasKey('comment', $this->objComment->getComment());
         $this->assertArrayHasKey('dateCreation', $this->objComment->getComment());
@@ -135,6 +261,7 @@ class CommentTest extends TestCase{
       $this->index();
 
       $sessionComment = array(
+        'userId' => $this->userId,
         'itemId' => $this->itemId,
         'login' => $this->userLogin,
       );
@@ -144,6 +271,7 @@ class CommentTest extends TestCase{
       );
 
       $this->assertIsArray($this->objComment->checkNewComment($newcomment, $sessionComment));
+      $this->assertArrayHasKey('userId', $this->objComment->checkNewComment($newcomment, $sessionComment));
       $this->assertArrayHasKey('itemId', $this->objComment->checkNewComment($newcomment, $sessionComment));
       $this->assertArrayHasKey('userLogin', $this->objComment->checkNewComment($newcomment, $sessionComment));
       $this->assertArrayHasKey('comment', $this->objComment->checkNewComment($newcomment, $sessionComment));
@@ -151,11 +279,6 @@ class CommentTest extends TestCase{
 
         }
 
-
-
-
-
-
-    
+  
   
 }

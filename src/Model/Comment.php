@@ -6,9 +6,10 @@ use Exception;
 
 class Comment
 {   
-    const PATTERN_COMMENT = "/^(\w[ -.,!?]*){2,255}$/";
-    const PATTERN_USERLOGIN = "/^[a-zA-Z0-9_]{2,16}$/";
+    const PATTERN_COMMENT = "/^[a-zA-Z0-9À-ÿ .,?!'&()-]{2,255}$/";
+    const PATTERN_USERLOGIN = "/^[a-zA-Z0-9À-ÿ_.-]{2,16}$/";
     private int $itemId=0;
+    private int $userId=0;
     private string $comment ='';
     private string $userLogin='';
     private string $dateCreation='';
@@ -28,6 +29,19 @@ class Comment
         
         return $this->itemId;
     }
+
+    
+    public function setUserId(int $userId) :int
+    {
+        $userId = (int) $userId;
+        if(!is_int($userId) || $userId<1){
+        throw new Exception('User Id invalide');
+    }
+        $this->userId = $userId;
+        
+        return $this->userId;
+    }
+
 
 
     public function setComment(string $comment) :string
@@ -65,6 +79,7 @@ class Comment
 
         $comment = array(
                 'itemId' => $this->itemId,
+                'userId'=> $this->userId,
                 'userLogin' => $this->userLogin,
                 'comment' => $this->comment,
                 'dateCreation' => $this->dateCreation
@@ -75,33 +90,18 @@ class Comment
 
 
 
-    public function checkNewComment($newcomment, $sessionComment)
+    public function checkNewComment(array $newcomment, array $sessionComment) :array
     {
 
-        if($this->setComment($newcomment['comment']) && $this->setItemId($sessionComment['itemId'])  && $this->setUserLogin($sessionComment['login']))
-        {
-            
-            return $this->getComment();
-            
+        if($this->setComment($newcomment['comment']) && $this->setItemId($sessionComment['itemId'])  && $this->setUserId($sessionComment['userId']) && $this->setUserLogin($sessionComment['login']))
+        {       
+            return $this->getComment();       
         }
         else
         {
             throw new Exception ('Format incorrect');
         }
 
-
-
-
     }
-
-
-
-
-
-
-
-
-
-
 
 }

@@ -1,6 +1,4 @@
 <?php
-// Chargement des classes
-
 
 namespace App\Controller ;
 
@@ -29,12 +27,9 @@ class UserController {
         var_dump($_POST);
         $getUserDb = $this->userModel->getUserDb($userLogin);
 
-        var_dump($getUserDb);
-
-        $checkUser = $this->user->checkLogUser($getUserDb, $_POST['pass']);
+        $checkUser = $this->user->checkLogUser($_POST['pass'], $getUserDb);
         $getUserDb = $this->user->getUser();
-        var_dump($checkUser);
-        var_dump($getUserDb);
+        
         if($checkUser){
             $this->userModel->updateUserDateLog($getUserDb);
             $this->sessionStart($getUserDb);
@@ -50,19 +45,19 @@ class UserController {
 
         $checkUser = $this->userModel->createNewUser($newUser);
         if($checkUser){
-            $this->sessionStart($newUser);
+            $getUserDb = $this->userModel->getUserDb($newUser['login']);
+            $this->sessionStart($getUserDb);
         }
     }
 
 
-
     public function sessionStart($user)
-    {   
-      
-       $_SESSION['login'] = $user['login'];
-       $_SESSION['lastLoginAt'] = $user['lastLoginAt'];
+    {  
+        var_dump($user);
+        $_SESSION['userId'] = $user['id'];
+       $_SESSION['login'] = $user['user_login'];
+       $_SESSION['lastLoginAt'] = $user['last_login_at'];
        header('Location: http://localhost/TP11_online_advisor_phppoo/items/listItemPage');
-    
     }
 
 
@@ -70,90 +65,7 @@ class UserController {
     {
         session_destroy();
         header('Location: http://localhost/TP11_online_advisor_phppoo');
-
     }
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-function listPosts()
-{
-    $postManager = new OpenClassrooms\Blog\Model\PostManager(); // Création d'un objet
-    $posts = $postManager->getPosts(); // Appel d'une fonction de cet objet
-
-    require('C:\wamp64\www\16.1_Web test\PHP et SQL\03_tp_blog\view\frontend\listPostsView.php');
-}
-
-
-
-function post()
-{
-    $postManager = new OpenClassrooms\Blog\Model\PostManager(); // Création d'un objet
-    $commentManager = new \OpenClassrooms\Blog\Model\CommentManager();
-    $post = $postManager->getPost($_GET['id']); // Appel d'une fonction de cet objet
-    $comments = $commentManager->getComments($_GET['id']);
-   
-    require('C:\wamp64\www\16.1_Web test\PHP et SQL\03_tp_blog\view\frontend\postView.php');
-
-}
-
-
-
-function addComment($postId, $author, $comment){
-
-    $commentManager = new OpenClassrooms\Blog\Model\CommentManager(); // Création d'un objet
-    $insert_comments =  $commentManager->postComment($postId, $author, $comment);
-
-    if($insert_comments === false){
-
-        throw new Exception('Impossible d\'ajouter le commentaire !');
-        
-    }
-    else{
-        header('Location:index.php?action=post&id=' .$postId);
-    }
-
-
-}
-
-
-function modifyComment(){
-    $commentManager= new OpenClassrooms\Blog\Model\CommentManager();
-    $modify_comment =  $commentManager->getComment($_GET['id']);
-
-    
-    require('C:\wamp64\www\16.1_Web test\PHP et SQL\03_tp_blog\view\frontend\commentView.php');
-
-}
-
-
-
-function updateComment($commentId,$newComment){
-    $commentManager= new OpenClassrooms\Blog\Model\CommentManager();
-    $modify_comment =  $commentManager->updateComments($commentId,$newComment);
-
-    if($modify_comment === false){
-
-        throw new Exception('Impossible d\'ajouter le commentaire !');
-        
-    }
-    else{
-        header('Location:index.php?action=post&id=' .$_GET['id_billet']);
-    }
-}
-
-*/

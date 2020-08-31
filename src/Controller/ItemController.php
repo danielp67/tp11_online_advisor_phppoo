@@ -42,7 +42,6 @@ class ItemController {
         $getComments = $comments->getComments($params[2]);
         $_SESSION['itemId'] = (int) $params[2];
         $getItem = $this->itemModel->getItemDb($params[2]);
-        
         require('src/View/itemView.php');
          
     }
@@ -55,11 +54,11 @@ class ItemController {
         }
         
         $this->item = new Item($_POST['itemName']);
-        var_dump($_POST, $_SESSION['login']);
-       $checkItem = $this->item->checkNewItem($_POST, $_SESSION['login']);
+       
+        $checkItem = $this->item->checkNewItem($_POST, $_SESSION);
+        
         $newItem = $this->itemModel->createNewItem($checkItem);
-        var_dump($newItem);
-
+        
         header('Location: http://localhost/TP11_online_advisor_phppoo/items/listItemPage');
 
     }

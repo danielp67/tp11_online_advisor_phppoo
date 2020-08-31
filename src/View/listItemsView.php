@@ -31,7 +31,7 @@ $title = 'Liste des items' ?>
           </div>
 
           <div class="form-inline mt-1">
-          <label for="category"  class="col-3">Categorie : </label>
+          <label for="category"  class="col-3">Catégorie : </label>
           <input class="form-control col-3" type="text" name="category" id="category" minlength="2" maxlength="50" required>
           </div>
 
@@ -72,7 +72,7 @@ $title = 'Liste des items' ?>
           </div>
 
           <div class="card-body">
-            <div class="card-text font-weight-bold"> De <em><?= nl2br(htmlspecialchars($affiche_message['user'])); ?></em> : 
+            <div class="card-text font-weight-bold"> De <em><?= nl2br(htmlspecialchars($affiche_message['user_login'])); ?></em> : 
               <?= nl2br(htmlspecialchars($affiche_message['review'])); ?>
              
               <br>
