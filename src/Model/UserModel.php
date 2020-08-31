@@ -17,7 +17,7 @@ class UserModel
     }
 
     
-    public function checkUserExist(string $userLogin, string $mail) :array
+    public function checkUserExist(string $userLogin, string $mail) :bool
     {
         
         $req = $this->db->prepare('SELECT id, user_login, mail, pass FROM user  WHERE user_login = ? OR mail = ?');
@@ -25,7 +25,7 @@ class UserModel
         $post = $req->fetch();
      
         if($post){
-            return $post;
+            return true;
         }
         else{
             return false;
@@ -62,8 +62,13 @@ class UserModel
         $req->execute(array($userLogin));
         $user = $req->fetch();
 
-        return $user;
-
+        if($user){
+            return $user;
+        }
+        else{
+           
+        throw new Exception ('Login inexistant');
+        }
     }
 
   

@@ -21,7 +21,7 @@ class CommentController {
     }
 
 
-    public function addComment()
+    public function addComment() :bool
     {      
         if($_SESSION['login'] == NULL){
             header('Location: http://localhost/TP11_online_advisor_phppoo');
@@ -32,6 +32,7 @@ class CommentController {
       
         header('Location: http://localhost/TP11_online_advisor_phppoo/items/getComments/'.$_SESSION['itemId']);
 
+        return true;
     }
 
 

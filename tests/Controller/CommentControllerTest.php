@@ -22,6 +22,29 @@ class CommentControllerTest extends TestCase{
 
     }
 
+    public function testAddComment()
+    {   $this->index();
+      /*
+        $response = require('src/View/loginView.php');
+        
+
+            $mock = $this->getMockBuilder(CommentController::class)
+                      ->disableOriginalConstructor()
+                      ->setMethods(['addComment'])
+                      ->getMock();
+
+        $mock
+            ->method('addComment')
+            ->will($response);
+
+            $this->assertContains('Location: http://localhost/TP11_online_advisor_phppoo/items/getComments/1', xdebug_get_headers());
+       
+    
+        $this->assertSame('commentModel', CommentController::class);
+
+       */
+    }
+
 
   
 }

@@ -20,9 +20,6 @@ class CommentModelTest extends TestCase{
       $this->assertFalse(method_exists ($this->commentModel,  'postComments' ));
       $this->assertFalse(method_exists ($this->commentModel,  'deleteUser' ));
 
-
     }
-
-
   
 }

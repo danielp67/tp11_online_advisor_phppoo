@@ -45,7 +45,7 @@ class UserController {
 
         $checkUser = $this->userModel->createNewUser($newUser);
         if($checkUser){
-            $getUserDb = $this->userModel->getUserDb($newUser['login']);
+            $getUserDb = $this->user->getUser();
             $this->sessionStart($getUserDb);
         }
     }
@@ -55,8 +55,8 @@ class UserController {
     {  
         var_dump($user);
         $_SESSION['userId'] = $user['id'];
-       $_SESSION['login'] = $user['user_login'];
-       $_SESSION['lastLoginAt'] = $user['last_login_at'];
+       $_SESSION['login'] = $user['login'];
+       $_SESSION['lastLoginAt'] = $user['lastLoginAt'];
        header('Location: http://localhost/TP11_online_advisor_phppoo/items/listItemPage');
     }
 
