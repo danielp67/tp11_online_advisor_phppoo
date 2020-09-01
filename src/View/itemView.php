@@ -1,7 +1,7 @@
 <?php
-$title = 'Poster un nouveau commentaire' ?>
-
-<?php ob_start(); ?>
+$title = 'Poster un nouveau commentaire';
+ob_start();
+?>
 
 
 <div class="row mx-auto py-5">
@@ -56,24 +56,22 @@ $title = 'Poster un nouveau commentaire' ?>
 
     <?php
     while ($affiche_message = $getComments->fetch()) {
+        ?>
+    
+          <div class="card my-3 bg-light">
+            <div class="card-body">
+              <div class="card-title">
+                <?= htmlspecialchars($affiche_message['user_login']); ?>
+                  <em>le <?= $affiche_message['date_comment']; ?></em>
+                
+              </div>
 
-    ?>
-      <div class="card my-3 bg-light">
-        <div class="card-body">
-          <div class="card-title">
-            <?= htmlspecialchars($affiche_message['user_login']); ?>
-              <em>le <?= $affiche_message['date_comment']; ?></em>
-            
+              <h5><?= nl2br(htmlspecialchars($affiche_message['comment'])); ?></h5>
+
+            </div>
           </div>
-
-          <h5><?= nl2br(htmlspecialchars($affiche_message['comment'])); ?></h5>
-
-        </div>
-      </div>
-    <?php
-
+        <?php
     }
-
     ?>
 
 
@@ -87,11 +85,10 @@ $title = 'Poster un nouveau commentaire' ?>
     <?php
 
     $getComments->closeCursor();
-
     ?>
   </div>
 </div>
 
-<?php $content = ob_get_clean(); ?>
-
-<?php require('template.php'); ?>
+<?php
+$content = ob_get_clean();
+require('template.php');

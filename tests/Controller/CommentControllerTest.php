@@ -26,12 +26,13 @@ class CommentControllerTest extends TestCase{
     {   $this->index();
       /*
         $response = require('src/View/loginView.php');
-        
+      
+      
 
-            $mock = $this->getMockBuilder(CommentController::class)
-                      ->disableOriginalConstructor()
-                      ->setMethods(['addComment'])
-                      ->getMock();
+      $mock = $this->getMockBuilder(CommentController::class)
+                   ->disableOriginalConstructor()
+                   ->setMethods(['addComment'])
+                   ->getMock();
 
         $mock
             ->method('addComment')

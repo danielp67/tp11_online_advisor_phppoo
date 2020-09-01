@@ -1,14 +1,9 @@
 <?php
 
+namespace App\Controller;
 
-namespace App\Controller ;
-
-
-use App\View;
-
-
-class MainController {
-
+final class MainController
+{
     public function loginPage()
     {
         return require('src/View/loginView.php');
@@ -19,6 +14,9 @@ class MainController {
         return require('src/View/newUserView.php');
     }
 
+    public function errorPage($error)
+    {
+        $error = 'Erreur : ' . $error;
+        return require('src/View/errorView.php');
+    }
 }
-
-

@@ -13,7 +13,7 @@
 
       
     <body>
-        <div class="container-fluid text-center ">
+        <div class="container-fluid text-center">
 
         <?= $content ?>
 

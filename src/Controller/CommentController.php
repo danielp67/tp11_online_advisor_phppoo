@@ -1,16 +1,12 @@
 <?php
-// Chargement des classes
 
-
-namespace App\Controller ;
+namespace App\Controller;
 
 use App\Model\Comment;
 use App\Model\CommentModel;
-use App\View;
 
-
-class CommentController {
-
+final class CommentController
+{
     private $comment;
     private $commentModel;
 
@@ -21,21 +17,15 @@ class CommentController {
     }
 
 
-    public function addComment() :bool
-    {      
-        if($_SESSION['login'] == NULL){
+    public function addComment(): void
+    {
+        if ($_SESSION['login'] === null) {
             header('Location: http://localhost/TP11_online_advisor_phppoo');
         }
         $this->comment = new Comment();
         $checkComment = $this->comment->checkNewComment($_POST, $_SESSION);
         $newComment = $this->commentModel->createNewComment($checkComment);
-      
-        header('Location: http://localhost/TP11_online_advisor_phppoo/items/getComments/'.$_SESSION['itemId']);
 
-        return true;
+        header('Location: http://localhost/TP11_online_advisor_phppoo/items/getComments/' . $_SESSION['itemId']);
     }
-
-
 }
-
-

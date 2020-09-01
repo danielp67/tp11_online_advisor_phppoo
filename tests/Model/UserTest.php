@@ -5,9 +5,9 @@ use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase{
 
-    const PATTERN_MAIL = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
-    const PATTERN_USERLOGIN = "/^[a-zA-Z0-9À-ÿ_.-]{2,16}$/";
-    const PATTERN_PASS = "/^[a-zA-Z0-9_]{6,12}$/";
+    private const PATTERN_MAIL = '/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/';
+    private const PATTERN_USERLOGIN = '/^[a-zA-Z0-9À-ÿ_.-]{2,16}$/';
+    private const PATTERN_PASS = '/^[a-zA-Z0-9_]{6,12}$/';
     private int $userId =5;
     private string $userLogin ='Username';
     private string $mail ='test@test.com';

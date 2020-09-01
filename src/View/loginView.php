@@ -1,6 +1,7 @@
-<?php $title = 'Se connecter' ?>
-
-<?php ob_start(); ?>
+<?php
+$title = 'Se connecter';
+ob_start();
+?>
 
 <div class="row mx-auto">
     <div class="col-6 offset-3">
@@ -31,6 +32,6 @@
     </div>
 </div>
 
-<?php $content = ob_get_clean(); ?>
-
-<?php require('template.php'); ?>
+<?php
+$content = ob_get_clean();
+require('template.php');

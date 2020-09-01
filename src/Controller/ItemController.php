@@ -1,17 +1,13 @@
 <?php
-// Chargement des classes
 
-
-namespace App\Controller ;
+namespace App\Controller;
 
 use App\Model\CommentModel;
 use App\Model\Item;
 use App\Model\ItemModel;
-use App\View;
 
-
-class ItemController {
-
+final class ItemController
+{
     private $item;
     private $itemModel;
 
@@ -20,10 +16,10 @@ class ItemController {
     {
         $this->itemModel = new ItemModel();
     }
-    
-    public function listItemPage()
-    {   
-        if($_SESSION['login'] == NULL){
+
+    public function listItemPage() :void
+    {
+        if ($_SESSION['login'] === null) {
             header('Location: http://localhost/TP11_online_advisor_phppoo');
         }
         $listItems = $this->itemModel->getItemsDb();
@@ -32,119 +28,32 @@ class ItemController {
     }
 
 
-    public function getComments()
+    public function getComments() :void
     {
-        if($_SESSION['login'] == NULL){
+        if ($_SESSION['login'] === null) {
             header('Location: http://localhost/TP11_online_advisor_phppoo');
         }
         $params = explode('/', $_GET['p']);
-        $comments = new CommentModel();
-        $getComments = $comments->getComments($params[2]);
+        $commentModel = new CommentModel();
+        $getComments = $commentModel->getComments($params[2]);
         $_SESSION['itemId'] = (int) $params[2];
         $getItem = $this->itemModel->getItemDb($params[2]);
         require('src/View/itemView.php');
-         
     }
 
 
-    public function addNewItem()
-    {      
-        if($_SESSION['login'] == NULL){
+    public function addNewItem() :void
+    {
+        if ($_SESSION['login'] === null) {
             header('Location: http://localhost/TP11_online_advisor_phppoo');
         }
-        
+
         $this->item = new Item($_POST['itemName']);
-       
+
         $checkItem = $this->item->checkNewItem($_POST, $_SESSION);
-        
+
         $newItem = $this->itemModel->createNewItem($checkItem);
-        
+
         header('Location: http://localhost/TP11_online_advisor_phppoo/items/listItemPage');
-
-    }
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-function listPosts()
-{
-    $postManager = new OpenClassrooms\Blog\Model\PostManager(); // Création d'un objet
-    $posts = $postManager->getPosts(); // Appel d'une fonction de cet objet
-
-    require('C:\wamp64\www\16.1_Web test\PHP et SQL\03_tp_blog\view\frontend\listPostsView.php');
-}
-
-
-
-function post()
-{
-    $postManager = new OpenClassrooms\Blog\Model\PostManager(); // Création d'un objet
-    $commentManager = new \OpenClassrooms\Blog\Model\CommentManager();
-    $post = $postManager->getPost($_GET['id']); // Appel d'une fonction de cet objet
-    $comments = $commentManager->getComments($_GET['id']);
-   
-    require('C:\wamp64\www\16.1_Web test\PHP et SQL\03_tp_blog\view\frontend\postView.php');
-
-}
-
-
-
-function addComment($postId, $author, $comment){
-
-    $commentManager = new OpenClassrooms\Blog\Model\CommentManager(); // Création d'un objet
-    $insert_comments =  $commentManager->postComment($postId, $author, $comment);
-
-    if($insert_comments === false){
-
-        throw new Exception('Impossible d\'ajouter le commentaire !');
-        
-    }
-    else{
-        header('Location:index.php?action=post&id=' .$postId);
-    }
-
-
-}
-
-
-function modifyComment(){
-    $commentManager= new OpenClassrooms\Blog\Model\CommentManager();
-    $modify_comment =  $commentManager->getComment($_GET['id']);
-
-    
-    require('C:\wamp64\www\16.1_Web test\PHP et SQL\03_tp_blog\view\frontend\commentView.php');
-
-}
-
-
-
-function updateComment($commentId,$newComment){
-    $commentManager= new OpenClassrooms\Blog\Model\CommentManager();
-    $modify_comment =  $commentManager->updateComments($commentId,$newComment);
-
-    if($modify_comment === false){
-
-        throw new Exception('Impossible d\'ajouter le commentaire !');
-        
-    }
-    else{
-        header('Location:index.php?action=post&id=' .$_GET['id_billet']);
     }
 }
-
-*/

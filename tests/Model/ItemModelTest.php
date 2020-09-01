@@ -14,7 +14,7 @@ class ItemModelTest extends TestCase{
     public function testAssertInstanceOfItemModel(){
       $this->index();
       $this->assertInstanceOf(ItemModel::class, $this->itemModel);
-      $this->assertClassHasAttribute('db', ItemModel::class);
+      $this->assertClassHasAttribute('dataBase', ItemModel::class);
       $this->assertTrue(method_exists ($this->itemModel,  'createNewItem' ));
       $this->assertTrue(method_exists ($this->itemModel,  'getItemsDb' ));
       $this->assertTrue(method_exists ($this->itemModel,  'getItemDb' ));

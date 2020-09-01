@@ -1,6 +1,7 @@
-<?php $title = 'Créer son compte' ?>
-
-<?php ob_start(); ?>
+<?php
+$title = 'Créer son compte';
+ob_start();
+?>
 
 <div class="row mx-auto">
     <div class="col-6 offset-3">
@@ -40,6 +41,6 @@
 </div>
 
 
-<?php $content = ob_get_clean(); ?>
-
-<?php require('template.php'); ?>
+<?php
+$content = ob_get_clean();
+ require('template.php');

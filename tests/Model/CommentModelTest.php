@@ -14,7 +14,7 @@ class CommentModelTest extends TestCase{
     public function testAssertInstanceOfCommentModel(){
       $this->index();
       $this->assertInstanceOf(CommentModel::class, $this->commentModel);
-      $this->assertClassHasAttribute('db', CommentModel::class);
+      $this->assertClassHasAttribute('dataBase', CommentModel::class);
       $this->assertTrue(method_exists ($this->commentModel,  'getComments' ));
       $this->assertTrue(method_exists ($this->commentModel,  'createNewComment' ));
       $this->assertFalse(method_exists ($this->commentModel,  'postComments' ));

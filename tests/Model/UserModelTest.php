@@ -14,7 +14,7 @@ class UserModelTest extends TestCase{
     public function testAssertInstanceOfUserModel(){
       $this->index();
       $this->assertInstanceOf(UserModel::class, $this->userModel);
-      $this->assertClassHasAttribute('db', UserModel::class);
+      $this->assertClassHasAttribute('dataBase', UserModel::class);
       $this->assertTrue(method_exists ($this->userModel,  'checkUserExist' ));
       $this->assertTrue(method_exists ($this->userModel,  'createNewUser' ));
       $this->assertTrue(method_exists ($this->userModel,  'getUserDb' ));

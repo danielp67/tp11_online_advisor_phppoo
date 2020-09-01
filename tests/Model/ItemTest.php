@@ -5,23 +5,16 @@ use PHPUnit\Framework\TestCase;
 
 class ItemTest extends TestCase{
 
-    const PATTERN_ITEMNAME = "/^[a-zA-Z0-9À-ÿ .'&()-]{2,50}$/";
-    const PATTERN_CATEGORY = "/^[a-zA-Z0-9À-ÿ .-]{2,30}$/";
-    const PATTERN_REVIEW = "/^[a-zA-Z0-9À-ÿ .,?!'&()-]{2,255}$/";
-    const PATTERN_USERLOGIN = "/^[a-zA-Z0-9À-ÿ_.-]{2,16}$/";
+    private const PATTERN_ITEMNAME = "/^[a-zA-Z0-9À-ÿ .'&()-]{2,50}$/";
+    private const PATTERN_CATEGORY = '/^[a-zA-Z0-9À-ÿ .-]{2,30}$/';
+    private const PATTERN_REVIEW = "/^[a-zA-Z0-9À-ÿ .,?!'&()-]{2,255}$/";
     private object $item;
     private string $itemName ='Tintin et Milou';
     private string $category ='Livre';
     private int $rate=3;
     private string $review ="Voila un tres bon livre et oui mon commentaire et long mais c'est pour le test";
-    private string $userLogin ='Username';
     private int $userId =3;
-    private string $failItemName ='1';
-    private string $failCategory = '';
-    private int $failRate=8;
-    private string $failReview ="Voila un tres bon livre et oui mon commentaire et long mais c'est pour le test &é_çà&é_çéà";
-    private string $failUserLogin ='Username-failllllllllllllll';
-
+   
 
 
     public function index(){
@@ -37,7 +30,6 @@ class ItemTest extends TestCase{
       $this->assertClassHasAttribute('rate', Item::class);
       $this->assertClassHasAttribute('review', Item::class);
       $this->assertClassHasAttribute('userId', Item::class);
-      $this->assertClassHasAttribute('userLogin', Item::class);
       $this->assertClassHasAttribute('dateCreation', Item::class);
 
     }
@@ -162,28 +154,6 @@ class ItemTest extends TestCase{
   }
 
     
-    /**
-     * @dataProvider additionProviderUserLogin
-     */
-    public function testSetUserLogin($userLogin)
-    {
-      $pattern = self::PATTERN_USERLOGIN;
-
-      $this->index();
-      $this->assertMatchesRegularExpression($pattern,  $this->item->setUserLogin($userLogin));
-    }
-
-    public function additionProviderUserLogin()
-    {
-        return [
-            ['fgrej-fdssd'],
-            ['élaHfjfiod'],
-            ['ÀteÀde_86'],
-            ['fdsff.dfzadde'],
-            ['Username']
-        ];
-    }
-
 
     
     public function testSetDateCreation()
@@ -315,31 +285,6 @@ class ItemTest extends TestCase{
   }
 
 
-    /**
-     * @dataProvider additionProviderFailUserLogin
-     */
-    public function testFailSetUserLogin($failUserLogin)
-    {
-      $this->expectException(Exception::class);
-
-      $this->index();
-      $this->item->setUserLogin($failUserLogin);
-    }
-
-
-    public function additionProviderFailUserLogin()
-    {
-        return [
-            ['test%testcom'],
-            ['lalalfr7897987898585'],
-            ['#.de'],
-            ['gmail-fd.d*'],
-            ['12lettr Uni']
-        ];
-    }
-
-
-
     
     public function testFailSetDateCreation()
     { 
@@ -359,7 +304,6 @@ class ItemTest extends TestCase{
       $this->assertArrayHasKey('rate', $this->item->getItem());
       $this->assertArrayHasKey('review', $this->item->getItem());
       $this->assertArrayHasKey('userId', $this->item->getItem());
-      $this->assertArrayHasKey('userLogin', $this->item->getItem());
       $this->assertArrayHasKey('dateCreation', $this->item->getItem());
      
     }
@@ -378,8 +322,6 @@ class ItemTest extends TestCase{
 
       $userLogin = array(
         'userId' => $this->userId,
-        'login' => $this->userLogin,
-
       );
 
       $this->assertIsArray($this->item->checkNewItem($item, $userLogin));
@@ -388,7 +330,6 @@ class ItemTest extends TestCase{
       $this->assertArrayHasKey('rate', $this->item->checkNewItem($item, $userLogin));
       $this->assertArrayHasKey('review', $this->item->checkNewItem($item, $userLogin));
       $this->assertArrayHasKey('userId', $this->item->checkNewItem($item, $userLogin));
-      $this->assertArrayHasKey('userLogin', $this->item->checkNewItem($item, $userLogin));
       $this->assertArrayHasKey('dateCreation', $this->item->checkNewItem($item, $userLogin));
 
     }

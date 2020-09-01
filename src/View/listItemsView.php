@@ -1,8 +1,7 @@
 <?php
-
-$title = 'Liste des items' ?>
-
-<?php ob_start(); ?>
+$title = 'Liste des items';
+ob_start();
+?>
 
 
 <div class="row px-5 py-5">
@@ -54,58 +53,52 @@ $title = 'Liste des items' ?>
 
     <?php
 
-
-
-
     while ($affiche_message = $listItems->fetch()) {
-
-    ?>
-      <div class="card mt-3 bg-light">
+        ?>
         
-          <div class="card-header">
-          <div class="row">
-          <div class="col-4 offset-4 text-center"><h3><?= htmlspecialchars($affiche_message['item_name']); ?></h3>
-          </div>
-          <div class="col-4 text-right"><h3>Note : <?= htmlspecialchars($affiche_message['rate']); ?>/5</h3>
-          </div>
-        </div>
-          </div>
-
-          <div class="card-body">
-            <div class="card-text font-weight-bold"> De <em><?= nl2br(htmlspecialchars($affiche_message['user_login'])); ?></em> : 
-              <?= nl2br(htmlspecialchars($affiche_message['review'])); ?>
-             
-              <br>
-              <a class="mt-2 btn btn-primary" href="items/getComments/<?php echo $affiche_message['id']; ?>">Voir les commentaires</a>
+          <div class="card mt-3 bg-light">
+            
+              <div class="card-header">
+              <div class="row">
+              <div class="col-4 offset-4 text-center"><h3><?= htmlspecialchars($affiche_message['item_name']); ?></h3>
+              </div>
+              <div class="col-4 text-right"><h3>Note : <?= htmlspecialchars($affiche_message['rate']); ?>/5</h3>
+              </div>
             </div>
-          </div>
+              </div>
+
+              <div class="card-body">
+                <div class="card-text font-weight-bold"> De <em><?= nl2br(htmlspecialchars($affiche_message['user_login'])); ?></em> : 
+                  <?= nl2br(htmlspecialchars($affiche_message['review'])); ?>
+                
+                  <br>
+                  <a class="mt-2 btn btn-primary" href="items/getComments/<?php echo $affiche_message['id']; ?>">Voir les commentaires</a>
+                </div>
+              </div>
 
 
-          <div class="card-footer">
-          <div class="row">
-            <div class="col-6">Catégorie : 
-              <?= htmlspecialchars($affiche_message['category']); ?>
-            </div>
-            <div class="col-6">Date : 
-              <?= $affiche_message['date_creation']; ?>
-            </div>
-          </div>
-          </div>
-         
-          
-        
-      </div>
-    <?php
-
+              <div class="card-footer">
+              <div class="row">
+                <div class="col-6">Catégorie : 
+                  <?= htmlspecialchars($affiche_message['category']); ?>
+                </div>
+                <div class="col-6">Date : 
+                  <?= $affiche_message['date_creation']; ?>
+                </div>
+              </div>
+              </div>
+            
+              
+            
+              </div>
+      <?php
     }
 
     $listItems->closeCursor();
-
     ?>
   </div>
 </div>
 
-
-<?php $content = ob_get_clean(); ?>
-
-<?php require('template.php'); ?>
+<?php
+$content = ob_get_clean();
+require('template.php');

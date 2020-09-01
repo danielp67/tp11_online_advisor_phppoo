@@ -5,17 +5,11 @@ use PHPUnit\Framework\TestCase;
 
 class CommentTest extends TestCase{
 
-    const PATTERN_COMMENT = "/^[a-zA-Z0-9À-ÿ .,?!'&()-]{2,255}$/";
-    const PATTERN_USERLOGIN = "/^[a-zA-Z0-9À-ÿ_.-]{2,16}$/";
+    private const PATTERN_COMMENT = "/^[a-zA-Z0-9À-ÿ .,?!'&()-]{2,255}$/";
     private object $objComment;
     private int $itemId =3;
     private int $userId =3;
     private string $comment ="Voila un tres bon livre et oui mon commentaire et long mais c'est pour le test";
-    private string $userLogin ='Username';
-    private int $failItemId =0;
-    private string $failComment ="Voila un tres bon livre et oui mon commentaire et long mais c'est pour le test &é_çà&é_çéà";
-    private string $failUserLogin ='Username-failllllllllllllll';
-
 
 
     public function index(){
@@ -28,7 +22,6 @@ class CommentTest extends TestCase{
       $this->assertInstanceOf(Comment::class, $this->objComment);
       $this->assertClassHasAttribute('itemId', Comment::class);
       $this->assertClassHasAttribute('userId', Comment::class);
-      $this->assertClassHasAttribute('userLogin', Comment::class);
       $this->assertClassHasAttribute('comment', Comment::class);
       $this->assertClassHasAttribute('dateCreation', Comment::class);
 
@@ -98,31 +91,6 @@ class CommentTest extends TestCase{
             ['Username& !!!!!']
         ];
     }
-
-
-        /**
-     * @dataProvider additionProviderUserLogin
-     */
-    public function testSetUserLogin($userLogin)
-    {
-      $pattern = self::PATTERN_USERLOGIN;
-
-      $this->index();
-      $this->assertMatchesRegularExpression($pattern,  $this->objComment->setUserLogin($userLogin));
-    }
-
-    public function additionProviderUserLogin()
-    {
-        return [
-            ['fgrej-fdssd'],
-            ['élaHfjfiod'],
-            ['ÀteÀde_86'],
-            ['fdsff.dfzadde'],
-            ['Username']
-        ];
-    }
-
-     
 
 
     
@@ -207,29 +175,6 @@ class CommentTest extends TestCase{
     }
 
 
-   /**
-     * @dataProvider additionProviderFailUserLogin
-     */
-    public function testFailSetUserLogin($failUserLogin)
-    {
-      $this->expectException(Exception::class);
-
-      $this->index();
-      $this->objComment->setUserLogin($failUserLogin);
-    }
-
-
-    public function additionProviderFailUserLogin()
-    {
-        return [
-            ['test%testcom'],
-            ['lalalfr7897987898585'],
-            ['#.de'],
-            ['gmail-fd.d*'],
-            ['12lettr Uni']
-        ];
-    }
-
     
     public function testFailSetDateCreation()
     { 
@@ -247,7 +192,6 @@ class CommentTest extends TestCase{
         $this->assertIsArray($this->objComment->getComment());
         $this->assertArrayHasKey('itemId', $this->objComment->getComment());
         $this->assertArrayHasKey('userId', $this->objComment->getComment());
-        $this->assertArrayHasKey('userLogin', $this->objComment->getComment());
         $this->assertArrayHasKey('comment', $this->objComment->getComment());
         $this->assertArrayHasKey('dateCreation', $this->objComment->getComment());
 
@@ -263,7 +207,6 @@ class CommentTest extends TestCase{
       $sessionComment = array(
         'userId' => $this->userId,
         'itemId' => $this->itemId,
-        'login' => $this->userLogin,
       );
 
       $newcomment = array(
@@ -273,7 +216,6 @@ class CommentTest extends TestCase{
       $this->assertIsArray($this->objComment->checkNewComment($newcomment, $sessionComment));
       $this->assertArrayHasKey('userId', $this->objComment->checkNewComment($newcomment, $sessionComment));
       $this->assertArrayHasKey('itemId', $this->objComment->checkNewComment($newcomment, $sessionComment));
-      $this->assertArrayHasKey('userLogin', $this->objComment->checkNewComment($newcomment, $sessionComment));
       $this->assertArrayHasKey('comment', $this->objComment->checkNewComment($newcomment, $sessionComment));
       $this->assertArrayHasKey('dateCreation', $this->objComment->checkNewComment($newcomment, $sessionComment));
 
