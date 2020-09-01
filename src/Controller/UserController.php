@@ -37,10 +37,10 @@ final class UserController
         $newUser = $this->user->checkNewUser($_POST);
 
         $checkUser = $this->userModel->createNewUser($newUser);
-        
         $getUserDb = $this->userModel->getUserDb($newUser['login']);
+
         $this->user->setUserId($getUserDb['id']);
-        
+
         if ($checkUser) {
         $getUserDb = $this->user->getUser();
         $this->sessionStart($getUserDb);

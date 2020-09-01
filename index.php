@@ -6,7 +6,7 @@ use App\Controller\ItemController;
 use App\Controller\MainController;
 use App\Controller\UserController;
 
-define('ROOT', str_replace('index.php', '', $_SERVER['SCRIPT_FILENAME']));
+//define('ROOT', str_replace('index.php', '', $_SERVER['SCRIPT_FILENAME']));
 
 require './vendor/autoload.php';
 
