@@ -6,11 +6,13 @@ ob_start();
 
 <div class="row mx-auto py-5">
             <div class="col-6">
-          <a class="center btn btn-primary" href="items/listItemPage">Retour à la page précédente</a>
+          <a class="center btn btn-primary" href="items/listItemPage">
+          Retour à la page précédente</a>
           </div>
 
           <div class="col-6">
-            <p><a class="btn btn-danger" href="users/sessionDestroy">Se déconnecter</a></p>
+            <p><a class="btn btn-danger" href="users/sessionDestroy">
+            Se déconnecter</a></p>
           </div>
 </div>
 

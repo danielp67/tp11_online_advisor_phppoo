@@ -21,10 +21,10 @@ class CommentControllerTest extends TestCase{
       $this->assertFalse(method_exists ($this->commentController,  'listItemPages' ));
 
     }
-
+/*
     public function testAddComment()
     {   $this->index();
-      /*
+      
         $response = require('src/View/loginView.php');
       
       
@@ -43,9 +43,10 @@ class CommentControllerTest extends TestCase{
     
         $this->assertSame('commentModel', CommentController::class);
 
-       */
+       
     }
 
+*/
 
   
 }

@@ -4,19 +4,19 @@ namespace App\Controller;
 
 final class MainController
 {
-    public function loginPage()
+    public function loginPage(): void
     {
-        return require('src/View/loginView.php');
+        require('src/View/loginView.php');
     }
 
-    public function newUserPage()
+    public function newUserPage(): void
     {
-        return require('src/View/newUserView.php');
+        require('src/View/newUserView.php');
     }
 
-    public function errorPage($error)
+    public function errorPage($error): void
     {
         $error = 'Erreur : ' . $error;
-        return require('src/View/errorView.php');
+        require('src/View/errorView.php');
     }
 }

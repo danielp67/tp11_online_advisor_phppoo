@@ -1,4 +1,7 @@
 {
+    
+    "license": "proprietary",
+    
     "name": "acs/tp11_online_advisor_phppoo",
     "description": "advisor",
     "authors": [

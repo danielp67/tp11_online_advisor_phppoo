@@ -25,12 +25,12 @@ $route = array(
     );
 
 try {
-    if ($params[0] != '') {
+    if ($params[0] !== '') {
         // On sauvegarde le 1er paramètre dans $controller en mettant sa 1ère lettre en majuscule
         $controller = ucfirst($params[0]);
 
         // On sauvegarde le 2ème paramètre dans $action si il existe, sinon index
-        $action = isset($params[1]) ? $params[1] : '';
+        $action = $params[1] ?? '';
 
         // On appelle le contrôleur
 

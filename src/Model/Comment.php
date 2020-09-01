@@ -12,13 +12,12 @@ final class Comment
     private string $comment = '';
     private string $dateCreation = '';
 
-
     public function __construct()
     {
         $this->setDateCreation();
     }
 
-    public function setItemId(int $itemId) :int
+    public function setItemId(int $itemId): int
     {
         if (! is_int($itemId) || $itemId < 1) {
             throw new Exception('Item Id invalide');
@@ -28,8 +27,7 @@ final class Comment
         return $this->itemId;
     }
 
-
-    public function setUserId(int $userId) :int
+    public function setUserId(int $userId): int
     {
         $userId = (int) $userId;
         if (! is_int($userId) || $userId < 1) {
@@ -40,9 +38,7 @@ final class Comment
         return $this->userId;
     }
 
-
-
-    public function setComment(string $comment) :string
+    public function setComment(string $comment): string
     {
         $pattern = self::PATTERN_COMMENT;
         if (! preg_match($pattern, $comment)) {
@@ -53,17 +49,16 @@ final class Comment
         return $this->comment;
     }
 
-
-    public function setDateCreation() :string
+    public function setDateCreation(): string
     {
         $this->dateCreation = date('Y-m-d H:i:s');
 
         return $this->dateCreation;
     }
 
-    public function getComment() :array
+    public function getComment(): array
     {
-        return $comment = array(
+        return array(
                 'itemId' => $this->itemId,
                 'userId' => $this->userId,
                 'comment' => $this->comment,
@@ -72,9 +67,7 @@ final class Comment
         );
     }
 
-
-
-    public function checkNewComment(array $newcomment, array $sessionComment) :array
+    public function checkNewComment(array $newcomment, array $sessionComment): array
     {
         if ($this->setComment($newcomment['comment'])
         && $this->setItemId($sessionComment['itemId'])

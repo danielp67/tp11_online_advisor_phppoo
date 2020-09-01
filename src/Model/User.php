@@ -22,7 +22,7 @@ final class User
     }
 
     //setters
-    public function setUserId(int $userId) :int
+    public function setUserId(int $userId): int
     {
         $userId = (int) $userId;
         if (! is_int($userId) || $userId < 1) {
@@ -33,8 +33,7 @@ final class User
         return $this->userId;
     }
 
-
-    public function setMail(string $mail) :string
+    public function setMail(string $mail): string
     {
         $pattern = self::PATTERN_MAIL;
         $mail = htmlspecialchars($mail);
@@ -46,7 +45,7 @@ final class User
         return $this->mail;
     }
 
-    public function setUserLogin(string $userLogin) :string
+    public function setUserLogin(string $userLogin): string
     {
         $pattern = self::PATTERN_USERLOGIN;
         $userLogin = htmlspecialchars($userLogin);
@@ -58,7 +57,7 @@ final class User
         return $this->userLogin;
     }
 
-    public function setPass($pass) :string
+    public function setPass($pass): string
     {
         $pattern = self::PATTERN_PASS;
         $pass = htmlspecialchars($pass);
@@ -70,24 +69,22 @@ final class User
         return $this->pass;
     }
 
-    public function setLastLoginAt() :string
+    public function setLastLoginAt(): string
     {
         $this->lastLoginAt = date('Y-m-d H:i:s');
 
         return $this->lastLoginAt;
     }
 
-
     //getters
-    public function getUserLogin() :string
+    public function getUserLogin(): string
     {
         return $this->userLogin;
     }
 
-
-    public function getUser() :array
+    public function getUser(): array
     {
-        return $user = array(
+        return array(
             'id' => $this->userId,
             'login' => $this->userLogin,
             'mail' => $this->mail,
@@ -96,9 +93,8 @@ final class User
         );
     }
 
-
     //méthode check log user
-    public function checkLogUser(string $passForm, array $user) :bool
+    public function checkLogUser(string $passForm, array $user): bool
     {
         if (password_verify($passForm, $user['pass'])) {
             $this->setUserId($user['id']);
@@ -110,12 +106,12 @@ final class User
         throw new Exception('Erreur login ou mot de passe');
     }
 
-
-
     //méthode check new user
-    public function checkNewUser(array $user) :array
+    public function checkNewUser(array $user): array
     {
-        if ($this->setMail($user['mail']) && $this->setPass($user['pass']) && $user['pass'] === $user['pass2']) {
+        if ($this->setMail($user['mail'])
+        && $this->setPass($user['pass'])
+        && $user['pass'] === $user['pass2']) {
             return $this->getUser();
         }
         throw new Exception('Format incorrect');

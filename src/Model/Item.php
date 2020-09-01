@@ -22,8 +22,7 @@ final class Item
         $this->setDateCreation();
     }
 
-
-    public function setItemName(string $itemName) :string
+    public function setItemName(string $itemName): string
     {
         $pattern = self::PATTERN_ITEMNAME;
         if (! preg_match($pattern, $itemName)) {
@@ -34,8 +33,7 @@ final class Item
         return $this->itemName;
     }
 
-
-    public function setCategory(string $category) :string
+    public function setCategory(string $category): string
     {
         $pattern = self::PATTERN_CATEGORY;
         if (! preg_match($pattern, $category)) {
@@ -46,8 +44,7 @@ final class Item
         return $this->category;
     }
 
-
-    public function setRate(int $rate) :int
+    public function setRate(int $rate): int
     {
         if (! is_int($rate) || $rate <= 0 || $rate > 5) {
             throw new Exception('Note invalide');
@@ -57,8 +54,7 @@ final class Item
         return $this->rate;
     }
 
-
-    public function setReview(string $review) :string
+    public function setReview(string $review): string
     {
         $pattern = self::PATTERN_REVIEW;
         if (! preg_match($pattern, $review)) {
@@ -69,8 +65,7 @@ final class Item
         return $this->review;
     }
 
-
-    public function setUserId(int $userId) :int
+    public function setUserId(int $userId): int
     {
         $userId = (int) $userId;
         if (! is_int($userId) || $userId < 1) {
@@ -81,16 +76,14 @@ final class Item
         return $this->userId;
     }
 
-
-    public function setDateCreation() :string
+    public function setDateCreation(): string
     {
         $this->dateCreation = date('Y-m-d H:i:s');
 
         return $this->dateCreation;
     }
 
-
-    public function getItem() :array
+    public function getItem(): array
     {
         return $item = array(
             'itemName' => $this->itemName,
@@ -102,7 +95,7 @@ final class Item
         );
     }
 
-    public function checkNewItem(array $item, array $sessionItem) :array
+    public function checkNewItem(array $item, array $sessionItem): array
     {
         if ($this->setCategory($item['category'])
         && $this->setRate($item['rate'])

@@ -10,12 +10,10 @@ final class CommentController
     private $comment;
     private $commentModel;
 
-
     public function __construct()
     {
         $this->commentModel = new CommentModel();
     }
-
 
     public function addComment(): void
     {

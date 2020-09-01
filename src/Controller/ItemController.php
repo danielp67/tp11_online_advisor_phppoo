@@ -11,13 +11,12 @@ final class ItemController
     private $item;
     private $itemModel;
 
-
     public function __construct()
     {
         $this->itemModel = new ItemModel();
     }
 
-    public function listItemPage() :void
+    public function listItemPage(): void
     {
         if ($_SESSION['login'] === null) {
             header('Location: http://localhost/TP11_online_advisor_phppoo');
@@ -27,8 +26,7 @@ final class ItemController
         require('src/View/listItemsView.php');
     }
 
-
-    public function getComments() :void
+    public function getComments(): void
     {
         if ($_SESSION['login'] === null) {
             header('Location: http://localhost/TP11_online_advisor_phppoo');
@@ -38,20 +36,18 @@ final class ItemController
         $getComments = $commentModel->getComments($params[2]);
         $_SESSION['itemId'] = (int) $params[2];
         $getItem = $this->itemModel->getItemDb($params[2]);
+
         require('src/View/itemView.php');
     }
 
-
-    public function addNewItem() :void
+    public function addNewItem(): void
     {
         if ($_SESSION['login'] === null) {
             header('Location: http://localhost/TP11_online_advisor_phppoo');
         }
 
         $this->item = new Item($_POST['itemName']);
-
         $checkItem = $this->item->checkNewItem($_POST, $_SESSION);
-
         $newItem = $this->itemModel->createNewItem($checkItem);
 
         header('Location: http://localhost/TP11_online_advisor_phppoo/items/listItemPage');
