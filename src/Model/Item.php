@@ -85,7 +85,7 @@ final class Item
 
     public function getItem(): array
     {
-        return $item = array(
+        return array(
             'itemName' => $this->itemName,
             'category' => $this->category,
             'rate' => $this->rate,
