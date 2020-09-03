@@ -35,7 +35,7 @@ ob_start();
                 value="Connexion" />
             </div>
             <div class="card-footer">
-                <a href="main/newUserPage" id="forSubscribe">
+                <a href="home/newUserPage" id="forSubscribe">
                 Pas encore de compte ?</a>
             </div>
         </form>

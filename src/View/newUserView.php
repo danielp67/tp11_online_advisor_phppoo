@@ -45,7 +45,7 @@ ob_start();
                 value="Inscription" />
             </div>
             <div class="card-footer">
-                <a href="main/loginPage" id="forConnexion">Déjà Inscrit ?</a>
+                <a href="home/loginPage" id="forConnexion">Déjà Inscrit ?</a>
             </div>
         </form>
     </div>

@@ -7,31 +7,39 @@ class MainControllerCest
     }
 
     // tests
-    public function frontpageMain(AcceptanceTester $I)
+    public function frontpageHome(AcceptanceTester $I)
     {
         $I->amOnPage('/');
         $I->see('Connexion');
+        $I->seeResponseCodeIs('200');
+
     }
 
-    public function frontpageMainLogin(AcceptanceTester $I)
+    public function frontpageFailHome(AcceptanceTester $I)
+    {
+        $I->amOnPage('/blabla');
+        $I->seeResponseCodeIs('404');
+    }
+
+    public function frontpageHomeLogin(AcceptanceTester $I)
     {
         $I->amOnPage('/');
         $I->see('Connexion');
         $I->click('Pas encore de compte');
-        $I->seeInCurrentUrl('/main/newUserPage');
+        $I->seeInCurrentUrl('/home/newUserPage');
         $I->see('Inscription');
     }
 
-    public function frontpageMainNewUser(AcceptanceTester $I)
+    public function frontpageHomeNewUser(AcceptanceTester $I)
     {
         $I->amOnPage('/');
         $I->see('Connexion');
         $I->click('Pas encore de compte');
-        $I->seeInCurrentUrl('/main/newUserPage');
+        $I->seeInCurrentUrl('/home/newUserPage');
         $I->see('Inscription');
 
         $I->click('Déjà Inscrit ?');
-        $I->seeInCurrentUrl('/main/loginPage');
+        $I->seeInCurrentUrl('/home/loginPage');
         $I->see('Connexion');
 
        
@@ -39,19 +47,19 @@ class MainControllerCest
 
     public function frontpageLogin(AcceptanceTester $I)
     {
-        $I->amOnPage('/main/loginPage');
+        $I->amOnPage('/home/loginPage');
         $I->see('Connexion');
     }
 
     public function frontpageNewUser(AcceptanceTester $I)
     {
-        $I->amOnPage('/main/newUserPage');
+        $I->amOnPage('/home/newUserPage');
         $I->see('Inscription');
     }
 
     public function frontpageFailLogin(AcceptanceTester $I)
     {
-        $I->amOnPage('/main/loginPage');
+        $I->amOnPage('/home/loginPage');
         $I->fillField('login', 'Username');
         $I->fillField('pass', 'passmaill');
         $I->click('Connexion');
@@ -62,7 +70,7 @@ class MainControllerCest
 
     public function frontpageFailNewUser(AcceptanceTester $I)
     {
-        $I->amOnPage('/main/newUserPage');
+        $I->amOnPage('/home/newUserPage');
         $I->fillField('login', 'Username');
         $I->fillField('mail', 'test@test.fr');
         $I->fillField('pass', 'passmail');
@@ -76,17 +84,17 @@ class MainControllerCest
 
     public function frontpageAddNewUser(AcceptanceTester $I)
     {
-        $I->amOnPage('/main/newUserPage');
+        $I->amOnPage('/home/newUserPage');
         $I->fillField('login', 'Username2');
         $I->fillField('mail', 'test@test2.fr');
         $I->fillField('pass', 'passmail');
         $I->fillField('pass2', 'passmail');
-
+/*
         $I->click('Inscription');
         $I->seeInCurrentUrl('/items/listItemPage');
         $I->see('Bienvenue Username2 sur Online Advisor !');
         $I->see('Derniers items notés :');
-
+*/
     }
 
     

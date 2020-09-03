@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-final class MainController
+final class HomeController
 {
     public function loginPage(): void
     {

@@ -2,8 +2,8 @@
 session_start();
 
 use App\Controller\CommentController;
+use App\Controller\HomeController;
 use App\Controller\ItemController;
-use App\Controller\MainController;
 use App\Controller\UserController;
 
 //define('ROOT', str_replace('index.php', '', $_SERVER['SCRIPT_FILENAME']));
@@ -17,7 +17,7 @@ var_dump($params);
 
 $route = array(
 
-    'Main' => new MainController(),
+    'Home' => new HomeController(),
     'Users' => new UserController(),
     'Items' => new ItemController(),
     'Comments' => new CommentController()
@@ -48,14 +48,14 @@ try {
             // On envoie le code réponse 404
             http_response_code(404);
             $error = "La page recherchée n'existe pas";
-            $controller = new MainController();
+            $controller = new HomeController();
             $controller->errorPage($error);
         }
     } else {
         // Ici aucun paramètre n'est défini
         // On instancie le contrôleur
 
-        $controller = new MainController();
+        $controller = new HomeController();
 
         // On appelle la méthode index
         $controller->loginPage();
@@ -64,7 +64,7 @@ try {
 // Si au moins 1 paramètre existe
 catch (Exception $error) { // S'il y a eu une erreur, alors...
     $error = $error->getMessage();
-    $controller = new MainController();
+    $controller = new HomeController();
     $controller->errorPage($error);
 }
 
