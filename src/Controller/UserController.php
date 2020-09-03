@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Model\User;
 use App\Model\UserModel;
 
-final class UserController
+final class UserController extends ManagerController
 {
     private $user;
     private $userModel;

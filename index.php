@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 use App\Controller\CommentController;
 use App\Controller\HomeController;
@@ -9,6 +8,8 @@ use App\Controller\UserController;
 //define('ROOT', str_replace('index.php', '', $_SERVER['SCRIPT_FILENAME']));
 
 require './vendor/autoload.php';
+
+session_start();
 
 echo date('Y-m-d H:i:s');
 $params = explode('/', $_GET['p']);
@@ -23,6 +24,7 @@ $route = array(
     'Comments' => new CommentController()
 
     );
+
 
 try {
     if ($params[0] !== '') {

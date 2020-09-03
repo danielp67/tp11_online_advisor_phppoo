@@ -2,21 +2,25 @@
 
 namespace App\Controller;
 
-final class HomeController
+final class HomeController extends ManagerController
 {
     public function loginPage(): void
     {
-        require('src/View/loginView.php');
+      
+    echo $this->twig->render('homeView.html.twig', ['newUser' => false ]);
+        //require('src/View/loginView.php');
     }
 
     public function newUserPage(): void
     {
-        require('src/View/newUserView.php');
+        echo $this->twig->render('homeView.html.twig', ['newUser' => true]);
+    //    require('src/View/newUserView.php');
     }
 
     public function errorPage($error): void
     {
         $error = 'Erreur : ' . $error;
-        require('src/View/errorView.php');
+        echo $this->twig->render('errorView.html.twig', ['error' => $error]);
+       // require('src/View/errorView.php');
     }
 }

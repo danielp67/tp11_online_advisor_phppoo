@@ -5,15 +5,19 @@ namespace App\Controller;
 use App\Model\CommentModel;
 use App\Model\Item;
 use App\Model\ItemModel;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 final class ItemController
 {
-    private $item;
-    private $itemModel;
+    private object $item;
+    private object $itemModel;
 
     public function __construct()
     {
         $this->itemModel = new ItemModel();
+        $this->loader = new FilesystemLoader('src/View');
+        $this->twig = new Environment($this->loader,[]);
     }
 
     public function listItemPage(): void
@@ -22,8 +26,9 @@ final class ItemController
             header('Location: http://localhost/TP11_online_advisor_phppoo');
         }
         $listItems = $this->itemModel->getItemsDb();
-
-        require('src/View/listItemsView.php');
+        $listItems = $listItems->fetchAll();
+        echo $this->twig->render('listItemsView.html.twig', ['session' => $_SESSION, 'Items' => $listItems]);
+        //require('src/View/listItemsView.php');
     }
 
     public function getComments(): void
@@ -36,8 +41,9 @@ final class ItemController
         $getComments = $commentModel->getComments($params[2]);
         $_SESSION['itemId'] = (int) $params[2];
         $getItem = $this->itemModel->getItemDb($params[2]);
-
-        require('src/View/itemView.php');
+        $getComments = $getComments->fetchAll();
+        echo $this->twig->render('ItemView.html.twig', ['session' => $_SESSION, 'Item' => $getItem, 'Comments' => $getComments]);
+       // require('src/View/itemView.php');
     }
 
     public function addNewItem(): void
