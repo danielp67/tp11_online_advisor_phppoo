@@ -1,20 +1,27 @@
 <?php
 
-use App\Controller\CommentController;
 use App\Controller\HomeController;
-use App\Controller\ItemController;
-use App\Controller\UserController;
 use App\Router\Router;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 
-//define('ROOT', str_replace('index.php', '', $_SERVER['SCRIPT_FILENAME']));
+require __DIR__.'/vendor/autoload.php';
 
-require './vendor/autoload.php';
+$session = new Session();
+$session->start();
 
-session_start();
+//session_start();
 
 echo date('Y-m-d H:i:s');
 $params = explode('/', $_GET['url']);
 var_dump($params);
+/*
+$request = new Request();
+$request2 = Request::createFromGlobals();
+
+var_dump($request);
+var_dump($request2);
+*/
 
     $router = new Router($_GET['url']);
 
@@ -43,12 +50,12 @@ var_dump($params);
 try {
     $router->run();
 
-    }
+}
 catch (Exception $error) { 
-     
+
         $controller = new HomeController();
         $controller->errorPage($error);
-    }
+}
 
 
 /*
@@ -110,4 +117,5 @@ catch (Exception $error) { // S'il y a eu une erreur, alors...
 */
 
 
-var_dump($_SESSION);
+var_dump($session->get('login'));
+var_dump($session->all());

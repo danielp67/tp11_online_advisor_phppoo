@@ -98,11 +98,11 @@ final class Item
         );
     }
 
-    public function checkNewItem(array $item, array $sessionItem): array
+    public function checkNewItem(object $item, array $sessionItem): array
     {
-        if ($this->setCategory($item['category'])
-        && $this->setRate($item['rate'])
-        && $this->setReview($item['review'])
+        if ($this->setCategory($item->get('category'))
+        && $this->setRate($item->get('rate'))
+        && $this->setReview($item->get('review'))
         && $this->setUserId($sessionItem['userId'])) {
             return $this->getItem();
         }

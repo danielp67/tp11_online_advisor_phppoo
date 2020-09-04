@@ -107,11 +107,11 @@ final class User
     }
 
     //méthode check new user
-    public function checkNewUser(array $user): array
+    public function checkNewUser(object $user): array
     {
-        if ($this->setMail($user['mail'])
-        && $this->setPass($user['pass'])
-        && $user['pass'] === $user['pass2']) {
+        if ($this->setMail($user->get('mail'))
+        && $this->setPass($user->get('pass'))
+        && $user->get('pass') === $user->get('pass2')) {
             return $this->getUser();
         }
         throw new Exception('Format incorrect');

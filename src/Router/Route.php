@@ -2,14 +2,16 @@
 
 namespace App\Router;
 
-class Route {
+final class Route
+{
 
-    private $path;
-    private $callable = [];
-    private $matches;
-    private $params = [];
+    private string $path;
+    private string $callable;
+    private array $matches = [];
+    private array $params = [];
 
-    public function __construct($path, $callable) {
+    public function __construct($path, $callable)
+    {
 
         $this->path = trim($path, '/');
         
@@ -23,14 +25,15 @@ class Route {
         return $this;
     }
 
-    public function match($url) {
+    public function match($url)
+    {
 
         $url = trim($url, '/');
-        $path = preg_replace_callback('#:([\w]+)#',[$this, 'paramMatch'],$this->path);
+        $path = preg_replace_callback('#:([\w]+)#', [$this, 'paramMatch'], $this->path);
         
         $regex = "#^$path$#i";
 
-        if(!preg_match($regex, $url, $matches)){
+        if(! preg_match($regex, $url, $matches)){
 
             return false;
 
@@ -42,7 +45,8 @@ class Route {
 
     }
 
-    private function paramMatch($match) {
+    private function paramMatch($match)
+    {
 
         if(isset($this->params[$match[1]])){
             return '(' . $this->params[$match[1]] . ')';
@@ -51,7 +55,8 @@ class Route {
         
     }
 
-    public function call(){
+    public function call()
+    {
 
         if(is_string($this->callable)){
 

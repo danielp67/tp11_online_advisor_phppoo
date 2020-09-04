@@ -5,6 +5,9 @@ namespace App\Controller;
 use App\Model\CommentModel;
 use App\Model\Item;
 use App\Model\ItemModel;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -12,49 +15,48 @@ final class ItemController
 {
     private object $item;
     private object $itemModel;
+    private object $session;
 
     public function __construct()
     {
-        $this->itemModel = new ItemModel();
+        $this->session = new Session();
+        if ($this->session->get('userId') === null){
+            $response = new RedirectResponse('http://localhost/TP11_online_advisor_phppoo');
+            $response->send();
+        }
+        $this->itemModel = new ItemModel();    
         $this->loader = new FilesystemLoader('src/View');
         $this->twig = new Environment($this->loader, []);
     }
 
     public function listItemPage(): void
     {
-        if ($_SESSION['login'] === null) {
-            header('Location: http://localhost/TP11_online_advisor_phppoo');
-        }
         $listItems = $this->itemModel->getItemsDb();
-        echo $this->twig->render('listItemsView.html.twig', ['session' => $_SESSION, 'Items' => $listItems]);
-        //require('src/View/listItemsView.php');
+        echo $this->twig->render('listItemsView.html.twig', ['session' => $this->session->all(), 'Items' => $listItems]);
     }
 
-    public function getComments(): void
-    {
-        if ($_SESSION['login'] === null) {
-            header('Location: http://localhost/TP11_online_advisor_phppoo');
-        }
-        $params = explode('/', $_GET['url']);
+    public function getComments($itemId): void
+    {  
+       
         $commentModel = new CommentModel();
-        $getComments = $commentModel->getComments($params[2]);
-        $_SESSION['itemId'] = (int) $params[2];
-        $getItem = $this->itemModel->getItemDb($params[2]);
+        $getComments = $commentModel->getComments($itemId);
+        $_SESSION['itemId'] = (int) $itemId;
+        $this->session->set('itemId', (int) $itemId);
+
+        $getItem = $this->itemModel->getItemDb($itemId);
         
-        echo $this->twig->render('ItemView.html.twig', ['session' => $_SESSION, 'Item' => $getItem, 'Comments' => $getComments]);
-       // require('src/View/itemView.php');
+        echo $this->twig->render('ItemView.html.twig', ['session' => $this->session->all(), 'Item' => $getItem, 'Comments' => $getComments]);
     }
 
     public function addNewItem(): void
     {
-        if ($_SESSION['login'] === null) {
-            header('Location: http://localhost/TP11_online_advisor_phppoo');
-        }
-
-        $this->item = new Item($_POST['itemName']);
-        $checkItem = $this->item->checkNewItem($_POST, $_SESSION);
+        $request = Request::createFromGlobals();
+        $this->item = new Item($request->get('itemName'));
+        $checkItem = $this->item->checkNewItem($request, $this->session->all());
+       
         $newItem = $this->itemModel->createNewItem($checkItem);
 
-        header('Location: http://localhost/TP11_online_advisor_phppoo/item/listItemPage');
+        $response = new RedirectResponse('http://localhost/TP11_online_advisor_phppoo/item/listItemPage');
+        $response->send();
     }
 }

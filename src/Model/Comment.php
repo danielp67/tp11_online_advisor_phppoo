@@ -68,9 +68,9 @@ final class Comment
         );
     }
 
-    public function checkNewComment(array $newcomment, array $sessionComment): array
+    public function checkNewComment(object $newcomment, array $sessionComment): array
     {
-        if ($this->setComment($newcomment['comment'])
+        if ($this->setComment($newcomment->get('comment'))
         && $this->setItemId($sessionComment['itemId'])
         && $this->setUserId($sessionComment['userId'])) {
             return $this->getComment();

@@ -2,35 +2,34 @@
 
 namespace App\Router;
 
-
-use Exception;
 use App\Router\Route;
+use Exception;
 
+final class Router
+{
 
-class Router {
+    private string $url;
+    private array $routes = [];
+    private array $namedRoutes = [];
 
-    private $url;
-    private $routes = [];
-    private $namedRoutes = [];
-
-    public function __construct($url){
+    public function __construct(string $url) {
 
         $this->url = $url;
     }
 
-    public function get($path, $callable, $name = null){
+    public function get($path, $callable, $name = null) {
 
         return $this->add($path, $callable, $name, 'GET');
 
     }
 
-    public function post($path, $callable, $name = null){
+    public function post($path, $callable, $name = null) {
 
         return $this->add($path, $callable, $name, 'POST');
 
     }
 
-    private function add($path, $callable, $name, $method){
+    private function add($path, $callable, $name, $method) {
 
         $route = new Route($path, $callable);
 
@@ -46,12 +45,11 @@ class Router {
             $name = $callable;
         }
         return $route;
-
     }
 
     public function run() {
 
-       if(!isset($this->routes[$_SERVER['REQUEST_METHOD']])){
+       if(! isset($this->routes[$_SERVER['REQUEST_METHOD']])){
 
             throw new Exception('REQUEST_METHOD does not exist');
        }
@@ -70,9 +68,9 @@ class Router {
 
     
 
-    public function url($name, $params = []){
+    public function url($name, $params = []) {
 
-        if(!isset($this->namedRoutes[$name])){
+        if(! isset($this->namedRoutes[$name])){
             http_response_code(404);
             throw new Exception('No matching routes');
         }
