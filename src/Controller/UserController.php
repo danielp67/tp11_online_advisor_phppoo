@@ -7,8 +7,8 @@ use App\Model\UserModel;
 
 final class UserController extends ManagerController
 {
-    private $user;
-    private $userModel;
+    private object $user;
+    private object $userModel;
 
     public function __construct()
     {
@@ -52,7 +52,7 @@ final class UserController extends ManagerController
         $_SESSION['userId'] = $user['id'];
         $_SESSION['login'] = $user['login'];
         $_SESSION['lastLoginAt'] = $user['lastLoginAt'];
-        header('Location: http://localhost/TP11_online_advisor_phppoo/items/listItemPage');
+        header('Location: http://localhost/TP11_online_advisor_phppoo/item/listItemPage');
     }
 
     public function sessionDestroy(): void

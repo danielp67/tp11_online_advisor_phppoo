@@ -2,8 +2,6 @@
 
 namespace App\Model;
 
-use PDOStatement;
-
 final class CommentModel
 {
     private object $dataBase;
@@ -14,18 +12,18 @@ final class CommentModel
         $this->dataBase = $pdo->dbConnect();
     }
 
-    public function getComments(int $itemId): PDOStatement
+    public function getComments(int $itemId): array
     {
-        $comments = $this->dataBase->prepare('SELECT 
+        $getComments = $this->dataBase->prepare('SELECT 
         c.id, c.item_id , c.user_idd, c.comment,  
         DATE_FORMAT(c.date_comment, \'%d/%m/%Y à %Hh%imin%ss\') 
         AS date_comment, u.id, u.user_login
         FROM comments c INNER JOIN user u ON c.user_idd = u.id
         WHERE c.item_id = ? ORDER BY date_comment');
 
-        $comments->execute(array($itemId));
+        $getComments->execute(array($itemId));
 
-        return $comments;
+        return $getComments->fetchAll();
     }
 
     public function createNewComment(array $comment): bool

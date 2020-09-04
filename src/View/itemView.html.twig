@@ -15,11 +15,11 @@
           <p>Dernière connexion le {{ session.lastLoginAt }}</p>
           </div>
           <div class="col-6">
-            <p><a class="btn btn-danger" href="users/sessionDestroy">
+            <p><a class="btn btn-danger" href="user/sessionDestroy">
             Se déconnecter</a></p>
           </div>
           <div class="col-4 offset-4">
-          <a class="center btn btn-primary" href="items/listItemPage">
+          <a class="center btn btn-primary" href="item/listItemPage">
           Retour à la liste des items</a>
           </div>
         </div>
@@ -45,9 +45,6 @@
                 <div class="card-text font-weight-bold">
                   De <em>{{ Item.user_login }}</em> : {{ Item.review }}
                   <br>
-                <a class="mt-2 btn btn-primary" 
-                href="items/getComments/{{ Item.id }}">
-                  Voir les commentaires</a>
                 </div>
               </div>
 
@@ -85,7 +82,7 @@
 
 
     <form method="post" 
-    action="comments/addComment/<?= $getItem['id'] ?>"class="news">
+    action="comment/addComment/{{ Item.id }}"class="news">
       <label for="comment">Nouveau commentaire : </label>
       <input type="text" name="comment" id="comment" 
       placeholder="Votre commentaire" size="50" maxlength="255" required>

@@ -36,7 +36,8 @@ final class UserModel
             VALUES(?, ?, ?, ?)');
 
             return $newUser->execute(array($user['login'], $user['mail'],
-            $user['pass'], $user['lastLoginAt']));
+                $user['pass'], $user['lastLoginAt']
+                ));
         }
         throw new Exception('Login ou Mail déjà utilisé');
     }

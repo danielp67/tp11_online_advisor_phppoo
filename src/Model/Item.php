@@ -25,6 +25,7 @@ final class Item
     public function setItemName(string $itemName): string
     {
         $pattern = self::PATTERN_ITEMNAME;
+        //$itemName = htmlspecialchars($itemName);
         if (! preg_match($pattern, $itemName)) {
             throw new Exception('Le titre est invalide');
         }
@@ -36,6 +37,7 @@ final class Item
     public function setCategory(string $category): string
     {
         $pattern = self::PATTERN_CATEGORY;
+        $category = htmlspecialchars($category);
         if (! preg_match($pattern, $category)) {
             throw new Exception('La categorie est invalide');
         }
@@ -57,6 +59,7 @@ final class Item
     public function setReview(string $review): string
     {
         $pattern = self::PATTERN_REVIEW;
+        //$review = htmlspecialchars($review);
         if (! preg_match($pattern, $review)) {
             throw new Exception('Le commentaire est invalide');
         }

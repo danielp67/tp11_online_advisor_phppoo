@@ -17,7 +17,7 @@ class ItemControllerCest
     {
 
         
-        $I->seeInCurrentUrl('/items/listItemPage');
+        $I->seeInCurrentUrl('/item/listItemPage');
         $I->see('Bienvenue Username sur Online Advisor !');
         $I->see('Derniers items notés :');
         
@@ -26,12 +26,12 @@ class ItemControllerCest
     public function frontpageItem(AcceptanceTester $I)
     {
 
-        $I->seeInCurrentUrl('/items/listItemPage');
+        $I->seeInCurrentUrl('/item/listItemPage');
         $I->see('Bienvenue Username sur Online Advisor !');
         $I->see('Derniers items notés :');
         $I->click('Voir les commentaires');
 
-        $I->seeInCurrentUrl('/items/getComments/');
+        $I->seeInCurrentUrl('/item/getComments/');
         $I->see('Commentaires :');
     }
     

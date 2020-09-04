@@ -19,7 +19,7 @@ Se connecter
 {% if newUser %}
 
 
-<form method="post" action="users/addNewUser" class="card">
+<form method="post" action="user/addNewUser" class="card">
             <legend class="card-header text-secondary">Inscription</legend>
             <div class="form-inline mt-2">
                 <label for="login" class="col-5 offset-1 text-right ">
@@ -62,7 +62,7 @@ Se connecter
         </form>
 
 {% else %}
-        <form method="post" action="users/logUser" class="card">
+        <form method="post" action="user/logUser" class="card">
                     <legend class="card-header text-secondary">Connexion</legend>
                     <div class="form-inline mt-2">
                         <label for="login" class="col-5 offset-1 text-right ">

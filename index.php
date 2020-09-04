@@ -4,6 +4,7 @@ use App\Controller\CommentController;
 use App\Controller\HomeController;
 use App\Controller\ItemController;
 use App\Controller\UserController;
+use App\Router\Router;
 
 //define('ROOT', str_replace('index.php', '', $_SERVER['SCRIPT_FILENAME']));
 
@@ -12,19 +13,54 @@ require './vendor/autoload.php';
 session_start();
 
 echo date('Y-m-d H:i:s');
-$params = explode('/', $_GET['p']);
+$params = explode('/', $_GET['url']);
 var_dump($params);
 
+    $router = new Router($_GET['url']);
+
+
+    $router->get('home/loginPage', 'Home.loginPage');
+    $router->get('home/newUserPage', 'Home.newUserPage');
+    $router->get('/', 'Home.loginPage');
+
+
+    $router->post('user/logUser', 'User.logUser');
+    $router->post('user/addNewUser', 'User.addNewUser');
+
+    $router->get('item/listItemPage', 'Item.listItemPage');
+    $router->post('item/addNewItem', 'Item.addNewItem');
+
+
+    $router->get('item/getComments/:id', 'Item.getComments');
+    $router->post('comment/addComment/:id', 'Comment.addComment');
+
+
+    $router->get('user/sessionDestroy', 'User.sessionDestroy');
+
+    $router->get('home/errorPage', 'Home.errorPage');
+
+
+try {
+    $router->run();
+
+    }
+catch (Exception $error) { 
+     
+        $controller = new HomeController();
+        $controller->errorPage($error);
+    }
+
+
+/*
 
 $route = array(
 
     'Home' => new HomeController(),
-    'Users' => new UserController(),
-    'Items' => new ItemController(),
-    'Comments' => new CommentController()
+    'User' => new UserController(),
+    'Item' => new ItemController(),
+    'Comment' => new CommentController()
 
     );
-
 
 try {
     if ($params[0] !== '') {
@@ -35,7 +71,9 @@ try {
         $action = $params[1] ?? '';
 
         // On appelle le contrôleur
-
+        //$controller = $controller."Controller";
+        //echo $controller;
+        //$controller = new $controller();
         // On instancie le contrôleur
         $controller = $route[$controller];
 
@@ -69,5 +107,7 @@ catch (Exception $error) { // S'il y a eu une erreur, alors...
     $controller = new HomeController();
     $controller->errorPage($error);
 }
+*/
+
 
 var_dump($_SESSION);

@@ -7,8 +7,8 @@ use App\Model\CommentModel;
 
 final class CommentController
 {
-    private $comment;
-    private $commentModel;
+    private object $comment;
+    private object $commentModel;
 
     public function __construct()
     {
@@ -24,6 +24,6 @@ final class CommentController
         $checkComment = $this->comment->checkNewComment($_POST, $_SESSION);
         $newComment = $this->commentModel->createNewComment($checkComment);
 
-        header('Location: http://localhost/TP11_online_advisor_phppoo/items/getComments/' . $_SESSION['itemId']);
+        header('Location: http://localhost/TP11_online_advisor_phppoo/item/getComments/' . $_SESSION['itemId']);
     }
 }

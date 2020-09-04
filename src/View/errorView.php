@@ -6,7 +6,7 @@ ob_start();
 
 <div class="row mx-auto py-5">
             <div class="col-6 offset-3">
-          <a class="center btn btn-primary" href="items/listItemPage">
+          <a class="center btn btn-primary" href="item/listItemPage">
           Retour à la page précédente</a>
           </div>
 </div>

@@ -41,6 +41,7 @@ final class Comment
     public function setComment(string $comment): string
     {
         $pattern = self::PATTERN_COMMENT;
+        //$comment = htmlspecialchars($comment);
         if (! preg_match($pattern, $comment)) {
             throw new Exception('Le commentaire est invalide');
         }

@@ -13,7 +13,7 @@
         <p>Dernière connexion le {{ session.lastLoginAt }}</p>
       </div>
       <div class="col-6">
-        <p><a class="btn btn-danger" href="users/sessionDestroy">
+        <p><a class="btn btn-danger" href="user/sessionDestroy">
         Se déconnecter</a></p>
       </div>
     </div>
@@ -23,7 +23,7 @@
   <div class="col-10 offset-1">
     <div class="card mt-3 bg-light">
      
-        <form method="post" action="items/addNewItem" class="news">
+        <form method="post" action="item/addNewItem" class="news">
           <legend class=" card-header">Nouveau item :</legend>
           <div class="card-body">
           <div class="form-inline mt-1">
@@ -79,7 +79,7 @@
                   De <em>{{ Item.user_login }}</em> : {{ Item.review }}
                   <br>
                 <a class="mt-2 btn btn-primary" 
-                href="items/getComments/{{ Item.id }}">
+                href="item/getComments/{{ Item.id }}">
                   Voir les commentaires</a>
                 </div>
               </div>

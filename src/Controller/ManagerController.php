@@ -5,7 +5,7 @@ namespace App\Controller;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-class  ManagerController
+abstract class  ManagerController
 {
     public object $loader;
     public object $twig;
@@ -14,7 +14,7 @@ class  ManagerController
     public function __construct()
     {
         $this->loader = new FilesystemLoader('src/View');
-        $this->twig = new Environment($this->loader,[]);
+        $this->twig = new Environment($this->loader, []);
 
         return $this->twig;
     }
